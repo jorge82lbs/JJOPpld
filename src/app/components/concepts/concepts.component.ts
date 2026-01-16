@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild, OnInit  } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClient, HttpClientModule } from '@angular/common/http'; // <-- Añade esto
 declare const bootstrap: any; // Añade esto al inicio del archivo
@@ -20,15 +20,14 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-concepts.component',
   imports: [
-    ReactiveFormsModule, 
-    CommonModule,
+    ReactiveFormsModule,
     HttpClientModule,
     MatIconModule,
     MatSortModule,
-    MatFormFieldModule, 
-    MatInputModule, 
+    MatFormFieldModule,
+    MatInputModule,
     MatSelectModule
-  ],
+],
   templateUrl: './concepts.component.html',
   styleUrl: './concepts.component.css'
 })

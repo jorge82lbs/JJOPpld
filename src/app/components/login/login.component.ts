@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 //import { AuthService } from 'tu-ruta-al-servicio'; // Importa tu servicio de autenticación
 import { HttpClient, HttpClientModule } from '@angular/common/http'; // <-- Añade esto
 declare const bootstrap: any; // Añade esto al inicio del archivo
@@ -12,10 +12,9 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-login.component',
   imports: [
-    ReactiveFormsModule, 
-    CommonModule,
+    ReactiveFormsModule,
     HttpClientModule
-  ],
+],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })

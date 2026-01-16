@@ -10,7 +10,7 @@
         &nbsp;&nbsp;&nbsp;
         <button class="btn btn-outline-light" (click)="goRelations()">Relación</button>
       </ul>
-      <form class="d-flex" role="search">        
+      <form class="d-flex" role="search">
         <button class="btn btn-outline-success" (click)="onLogout()" type="submit">Salir</button>
       </form>
     </div>
@@ -18,328 +18,342 @@
 </nav>
 
 <div class="container mt-4">
-    <div class="mt-4">
-      <form [formGroup]="mainForm" (ngSubmit)="getRelationsSelect()">
+  <div class="mt-4">
+    <form [formGroup]="mainForm" (ngSubmit)="getRelationsSelect()">
       <div class="input-group mb-3">
-        
-        <select class="form-select" size="1" aria-label="Size 1 select example" [(ngModel)]="mainConcept" (change)="onMainSelectionChange()" [ngModelOptions]="{standalone: true}">                            
-          <option [ngValue]="item" *ngFor="let item of listConcepts">
-            {{ item.nomCatalogRisk }}
-          </option>
+
+        <select class="form-select" size="1" aria-label="Size 1 select example" [(ngModel)]="mainConcept" (change)="onMainSelectionChange()" [ngModelOptions]="{standalone: true}">
+          @for (item of listConcepts; track item) {
+            <option [ngValue]="item">
+              {{ item.nomCatalogRisk }}
+            </option>
+          }
         </select>
-        <button 
-          class="btn btn-primary" 
-          type="submit"         
+        <button
+          class="btn btn-primary"
+          type="submit"
           >
           Buscar
         </button>
-        
+
       </div>
-      </form>
-    </div>
+    </form>
+  </div>
 </div>
 
 <div class="container mt-4">
-    <div class="mt-4">
-      
-      <div class="input-group mb-3">
-        
-        <input type="text" (keyup)="onKeyUp($event)" placeholder="Search options...">
-        
-        <select class="form-select" size="1" aria-label="Size 1 select example" >                            
-          <option [ngValue]="item" *ngFor="let item of filteredOptions">
+  <div class="mt-4">
+
+    <div class="input-group mb-3">
+
+      <input type="text" (keyup)="onKeyUp($event)" placeholder="Search options...">
+
+      <select class="form-select" size="1" aria-label="Size 1 select example" >
+        @for (item of filteredOptions; track item) {
+          <option [ngValue]="item">
             {{ item.nomCatalogRisk }}
           </option>
-        </select>
+        }
+      </select>
 
-        
-      </div>
-      
+
     </div>
+
+  </div>
 </div>
 
-<div class="container mt-4">  
+<div class="container mt-4">
   <div class="mt-4">
     <div class="table-container">
       <div class="scrollable-container">
-      <table  class="table table-hover table-bordered" >
-        <thead class="table-dark">
-          <tr>
-            <th class="text-center table-td">
-              <button class="btn btn-success" style="scale: .8" data-toggle="modal" data-target="#modalSaveRelation"
-                (click)="onOpenSaveConcept()"
-                >
-                <i class="bi bi-plus-circle"></i>&nbsp;Nuevo
-              </button>
-            </th>
-            <th class="text-center table-td"></th>
-            <th class="text-center">
-              <input 
-                  type="text" 
-                  class="form-control" 
+        <table  class="table table-hover table-bordered" >
+          <thead class="table-dark">
+            <tr>
+              <th class="text-center table-td">
+                <button class="btn btn-success" style="scale: .8" data-toggle="modal" data-target="#modalSaveRelation"
+                  (click)="onOpenSaveConcept()"
+                  >
+                  <i class="bi bi-plus-circle"></i>&nbsp;Nuevo
+                </button>
+              </th>
+              <th class="text-center table-td"></th>
+              <th class="text-center">
+                <input
+                  type="text"
+                  class="form-control"
                   placeholder="Concepto"
                   id="RelRelAjaxId"
-                >
-            </th>          
-            
-            <th class="text-center table-td"></th>
-            <th class="text-center table-td"></th>
-            <th class="text-center table-td"></th>
-            <th class="text-center table-td"></th>
-          </tr>
-          <tr>
-            <th class="text-center table-td"></th>
-            
-            <th class="text-center table-td">Catálogo</th>          
-            <th class="text-center table-td">Catálogo Relacionado</th>          
-            <th class="text-center table-td">Creado Por</th>
-            <th class="text-center table-td">Fecha Creación</th>
-            <th class="text-center table-td">Regla</th>
-            <th class="text-center table-td">Ver Reglas</th>
-          </tr>
-        </thead>
-        <tbody>          
-          <tr *ngFor="let item of listRelationSelect" >
-            <td class="text-center">              
-              <button class="btn btn-primary" style="scale: .8">
-                <i class="bi bi-pencil" style="scale: .8"></i> 
-              </button>
-              &nbsp;
-              <button class="btn btn-danger" style="scale: .8" >
-                <i class="bi bi-trash" style="scale: .8"></i> 
-              </button>
+                  >
+                </th>
 
-            </td>            
-            
-            <td class="text-center table-td">{{ item.nomConceptRel }}</td>
-            <td class="text-center table-td">{{ item.nomConcept }}</td>
-            <td class="text-center table-td">{{ item.createdBy }}</td>
-            <td class="text-center table-td">{{ item.fecCreationDate }}</td>
-            <td class="text-center table-td"><button type="button" style="scale: .8" (click)="onOpenSaveRule(item)"><i class="bi bi-pencil-square" style="scale: .8"></i></button></td>
-            <td class="text-center table-td"><button type="button" style="scale: .8" (click)="onOpenViewRule(item)"><i class="bi bi-table" style="scale: .8"></i></button></td>
-          </tr>        
-        </tbody>
-      </table>
-      </div>
-    </div>
-  </div>    
-</div>  
+                <th class="text-center table-td"></th>
+                <th class="text-center table-td"></th>
+                <th class="text-center table-td"></th>
+                <th class="text-center table-td"></th>
+              </tr>
+              <tr>
+                <th class="text-center table-td"></th>
 
-
-<div class="modal modal-backdrop" tabindex="-1" id="modalSaveRelation">  
-  <div class="modal-container">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header-new" style="text-align: center;">        
-          <h4 style="text-align: center;" id="myModalL">Seleccione Concepto a Relacionar</h4>
-        </div>    
-        <form [formGroup]="sonForm" (ngSubmit)="onSaveRelConcept()">
-          <div class="modal-body">            
-            <div class="input-group mb-3">
-              <p>&nbsp;</p>
-              <p>
-              <select class="form-select" size="1" aria-label="Size 1 select example" [(ngModel)]="conceptRel" (change)="onSelectionChange()" [ngModelOptions]="{standalone: true}">      
-                <option selected>Seleccione...</option>
-                <option [ngValue]="item" *ngFor="let item of listRelConSelect">
-                  {{ item.nomCatalogRisk }}
-                </option>
-              </select>
-              </p>                     
-            </div>   
-          </div>        
-          <div class="modal-footer">            
-            <button type="submit" class="btn btn-success">Guardar</button>
-            &nbsp;
-            <button type="button" class="btn btn-danger" (click)="onCloseSaveConcept()">Cancel</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>  
-
-<div class="modal modal-backdrop" tabindex="-1" id="modalUmbral">  
-  <div class="modal-container">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header-new" style="text-align: center;">        
-          <h4 style="text-align: center;" id="myModalUm">Asignar Regla para este Concepto</h4>
-        </div>    
-        <form [formGroup]="umbralForm" (ngSubmit)="onSaveUmbral()">
-          <div class="modal-body">            
-            <div class="input-group mb-3">              
-              <p>
-              <select class="form-select" size="1" aria-label="Size 1 select example" 
-                      (change)="onTypeRuleSelectionChange($event)"                      
-                      >
-                <option selected>Seleccione...</option>
-                <option>Rango</option>
-                <option>Valor</option>
-                <option>Porcentaje</option>
-                <option>Lista de Valores</option>
-                <option>Suma</option>
-                <option>Resta</option>
-                <option>Multiplicación</option>
-                <option>División</option>
-              </select>
-              </p>
-              <div class="input-group mb-3">
-                <input 
-                  type="text" 
-                  class="form-control" 
-                  placeholder="Nombre de la Regla"     
-                  id="nomRuleTxt"
-                  formControlName="nomRuleTxt"
-                />
-              </div>
-              
-                <input 
-                  type="hidden" 
-                  class="form-control" 
-                  placeholder="idRelation"
-                  id="idRelationTxt"
-                  formControlName="idRelationTxt"
-                />
-
-                <input 
-                  type="hidden" 
-                  class="form-control" 
-                  placeholder="Tipo Regla"
-                  id="typeRuleTxt"
-                  formControlName="typeRuleTxt"
-                />
-              
-
-              <div *ngIf="lbRangoType" class="mt-4">
-                <div class="input-group mb-3">              
-                <input 
-                  type="text" 
-                  class="form-control" 
-                  placeholder="Rango Inicial"     
-                  id="rangoIniTxt"
-                  formControlName="rangoIniTxt"
-                />
-                </div>
-                <div class="input-group mb-3">
-                <input 
-                  type="text" 
-                  class="form-control" 
-                  placeholder="Rango Final"     
-                  id="rangoFinTxt"
-                  formControlName="rangoFinTxt"
-                />
-                </div>
-                <div class="input-group mb-3">
-                <input 
-                  type="text" 
-                  class="form-control" 
-                  placeholder="Grupo"
-                  id="groupRangeTxt"
-                  formControlName="groupRangeTxt"
-                />
-                </div>
-              </div>
-              
-              <div *ngIf="lbValorType" class="mt-4">
-                <div class="input-group mb-3">
-                <input 
-                  type="text" 
-                  class="form-control" 
-                  placeholder="Cantidad"     
-                  id="cantidadTxt"
-                  formControlName="cantidadTxt"
-                />
-                </div>
-              </div>
-
-              <div *ngIf="lbMathType" class="mt-4">
-                <div class="input-group mb-3">
-                <input 
-                  type="text" 
-                  class="form-control" 
-                  placeholder="Determinante"     
-                  id="determinanteTxt"
-                  formControlName="determinanteTxt"
-                />                
-                </div>
-              </div>
-            </div>   
-          </div>        
-          <div class="modal-footer">            
-            <button type="submit" class="btn btn-success">Guardar</button>
-            &nbsp;
-            <button type="button" class="btn btn-danger" (click)="onCloseSaveRule()">Cancel</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>  
-
-<div class="modal modal-xl modal-backdrop" tabindex="-1" id="modalUmbralView">  
-  <div class="modal-container">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header-new" style="text-align: center;">        
-          <h4 style="text-align: center;" id="myModalUm">Reglas para este Concepto</h4>
-        </div>            
-        <div class="modal-body">
-          <div class="table-container">
-            <div class="scrollable-container">
-            <table  class="table table-hover table-bordered" >
-              <thead class="table-dark">
-                <tr>
-                  <th class="text-center table-td"></th>
-                  <th class="text-center table-td"></th>
-                  <th class="text-center"></th>
-                  <th class="text-center table-td"></th>
-                  <th class="text-center table-td"></th>
-                  <th class="text-center table-td"></th>
-                  <th class="text-center table-td"></th>
-                  <th class="text-center table-td"></th>
-                  
-                  <th class="text-center table-td"></th>
-                  <th class="text-center table-td"></th>
-                  <th class="text-center table-td"></th>
-                </tr>
-                <tr>
-                  <th class="text-center table-td"></th>                  
-                  <th class="text-center table-td">Catálogo</th>          
-                  <th class="text-center table-td">Catálogo Relacionado</th>          
-                  <th class="text-center table-td">Tipo de Regla</th>
-                  <th class="text-center table-td">Nombre de Regla</th>
-                  <th class="text-center table-td">Rango Grupo</th>
-                  
-                  <th class="text-center table-td">Rango Inicial</th>
-                  <th class="text-center table-td">Rango Final</th>
-                  <th class="text-center table-td">Cantidad</th>
-                  <th class="text-center table-td">Determinante</th>
-                  <th class="text-center table-td">Eliminar</th>
-                </tr>
-              </thead>
-              <tbody>          
-                <tr *ngFor="let item of listUmDetSelect" >
-                  <td class="text-center"></td>                              
+                <th class="text-center table-td">Catálogo</th>
+                <th class="text-center table-td">Catálogo Relacionado</th>
+                <th class="text-center table-td">Creado Por</th>
+                <th class="text-center table-td">Fecha Creación</th>
+                <th class="text-center table-td">Regla</th>
+                <th class="text-center table-td">Ver Reglas</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of listRelationSelect; track item) {
+                <tr >
+                  <td class="text-center">
+                    <button class="btn btn-primary" style="scale: .8">
+                      <i class="bi bi-pencil" style="scale: .8"></i>
+                    </button>
+                    &nbsp;
+                    <button class="btn btn-danger" style="scale: .8" >
+                      <i class="bi bi-trash" style="scale: .8"></i>
+                    </button>
+                  </td>
                   <td class="text-center table-td">{{ item.nomConceptRel }}</td>
                   <td class="text-center table-td">{{ item.nomConcept }}</td>
-                  <td class="text-center table-td">{{ item.typeRule }}</td>
-                  <td class="text-center table-td">{{ item.nomRule }}</td>
-                  <td class="text-center table-td">{{ item.groupRange }}</td>
-                  <td class="text-center table-td">{{ item.initialRange }}</td>
-                  <td class="text-center table-td">{{ item.finalRange }}</td>
-                  <td class="text-center table-td">{{ item.numAmount }}</td>
-                  <td class="text-center table-td">{{ item.determinant }}</td>
-                  <td class="text-center table-td"><button type="button" style="scale: .8"><i class="bi bi-table" style="scale: .8"></i></button></td>
-                </tr>        
-              </tbody>
-            </table>
-            </div>
-          </div>
-        </div>        
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" (click)="onCloseViewRule()">Cancel</button>
+                  <td class="text-center table-td">{{ item.createdBy }}</td>
+                  <td class="text-center table-td">{{ item.fecCreationDate }}</td>
+                  <td class="text-center table-td"><button type="button" style="scale: .8" (click)="onOpenSaveRule(item)"><i class="bi bi-pencil-square" style="scale: .8"></i></button></td>
+                  <td class="text-center table-td"><button type="button" style="scale: .8" (click)="onOpenViewRule(item)"><i class="bi bi-table" style="scale: .8"></i></button></td>
+                </tr>
+              }
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
   </div>
-</div>  
+
+
+  <div class="modal modal-backdrop" tabindex="-1" id="modalSaveRelation">
+    <div class="modal-container">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header-new" style="text-align: center;">
+            <h4 style="text-align: center;" id="myModalL">Seleccione Concepto a Relacionar</h4>
+          </div>
+          <form [formGroup]="sonForm" (ngSubmit)="onSaveRelConcept()">
+            <div class="modal-body">
+              <div class="input-group mb-3">
+                <p>&nbsp;</p>
+                <p>
+                  <select class="form-select" size="1" aria-label="Size 1 select example" [(ngModel)]="conceptRel" (change)="onSelectionChange()" [ngModelOptions]="{standalone: true}">
+                    <option selected>Seleccione...</option>
+                    @for (item of listRelConSelect; track item) {
+                      <option [ngValue]="item">
+                        {{ item.nomCatalogRisk }}
+                      </option>
+                    }
+                  </select>
+                </p>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-success">Guardar</button>
+              &nbsp;
+              <button type="button" class="btn btn-danger" (click)="onCloseSaveConcept()">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal modal-backdrop" tabindex="-1" id="modalUmbral">
+    <div class="modal-container">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header-new" style="text-align: center;">
+            <h4 style="text-align: center;" id="myModalUm">Asignar Regla para este Concepto</h4>
+          </div>
+          <form [formGroup]="umbralForm" (ngSubmit)="onSaveUmbral()">
+            <div class="modal-body">
+              <div class="input-group mb-3">
+                <p>
+                  <select class="form-select" size="1" aria-label="Size 1 select example"
+                    (change)="onTypeRuleSelectionChange($event)"
+                    >
+                    <option selected>Seleccione...</option>
+                    <option>Rango</option>
+                    <option>Valor</option>
+                    <option>Porcentaje</option>
+                    <option>Lista de Valores</option>
+                    <option>Suma</option>
+                    <option>Resta</option>
+                    <option>Multiplicación</option>
+                    <option>División</option>
+                  </select>
+                </p>
+                <div class="input-group mb-3">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Nombre de la Regla"
+                    id="nomRuleTxt"
+                    formControlName="nomRuleTxt"
+                    />
+                  </div>
+
+                  <input
+                    type="hidden"
+                    class="form-control"
+                    placeholder="idRelation"
+                    id="idRelationTxt"
+                    formControlName="idRelationTxt"
+                    />
+
+                    <input
+                      type="hidden"
+                      class="form-control"
+                      placeholder="Tipo Regla"
+                      id="typeRuleTxt"
+                      formControlName="typeRuleTxt"
+                      />
+
+
+                      @if (lbRangoType) {
+                        <div class="mt-4">
+                          <div class="input-group mb-3">
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Rango Inicial"
+                              id="rangoIniTxt"
+                              formControlName="rangoIniTxt"
+                              />
+                            </div>
+                            <div class="input-group mb-3">
+                              <input
+                                type="text"
+                                class="form-control"
+                                placeholder="Rango Final"
+                                id="rangoFinTxt"
+                                formControlName="rangoFinTxt"
+                                />
+                              </div>
+                              <div class="input-group mb-3">
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Grupo"
+                                  id="groupRangeTxt"
+                                  formControlName="groupRangeTxt"
+                                  />
+                                </div>
+                              </div>
+                            }
+
+                            @if (lbValorType) {
+                              <div class="mt-4">
+                                <div class="input-group mb-3">
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="Cantidad"
+                                    id="cantidadTxt"
+                                    formControlName="cantidadTxt"
+                                    />
+                                  </div>
+                                </div>
+                              }
+
+                              @if (lbMathType) {
+                                <div class="mt-4">
+                                  <div class="input-group mb-3">
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="Determinante"
+                                      id="determinanteTxt"
+                                      formControlName="determinanteTxt"
+                                      />
+                                    </div>
+                                  </div>
+                                }
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="submit" class="btn btn-success">Guardar</button>
+                              &nbsp;
+                              <button type="button" class="btn btn-danger" (click)="onCloseSaveRule()">Cancel</button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="modal modal-xl modal-backdrop" tabindex="-1" id="modalUmbralView">
+                    <div class="modal-container">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header-new" style="text-align: center;">
+                            <h4 style="text-align: center;" id="myModalUm">Reglas para este Concepto</h4>
+                          </div>
+                          <div class="modal-body">
+                            <div class="table-container">
+                              <div class="scrollable-container">
+                                <table  class="table table-hover table-bordered" >
+                                  <thead class="table-dark">
+                                    <tr>
+                                      <th class="text-center table-td"></th>
+                                      <th class="text-center table-td"></th>
+                                      <th class="text-center"></th>
+                                      <th class="text-center table-td"></th>
+                                      <th class="text-center table-td"></th>
+                                      <th class="text-center table-td"></th>
+                                      <th class="text-center table-td"></th>
+                                      <th class="text-center table-td"></th>
+
+                                      <th class="text-center table-td"></th>
+                                      <th class="text-center table-td"></th>
+                                      <th class="text-center table-td"></th>
+                                    </tr>
+                                    <tr>
+                                      <th class="text-center table-td"></th>
+                                      <th class="text-center table-td">Catálogo</th>
+                                      <th class="text-center table-td">Catálogo Relacionado</th>
+                                      <th class="text-center table-td">Tipo de Regla</th>
+                                      <th class="text-center table-td">Nombre de Regla</th>
+                                      <th class="text-center table-td">Rango Grupo</th>
+
+                                      <th class="text-center table-td">Rango Inicial</th>
+                                      <th class="text-center table-td">Rango Final</th>
+                                      <th class="text-center table-td">Cantidad</th>
+                                      <th class="text-center table-td">Determinante</th>
+                                      <th class="text-center table-td">Eliminar</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    @for (item of listUmDetSelect; track item) {
+                                      <tr >
+                                        <td class="text-center"></td>
+                                        <td class="text-center table-td">{{ item.nomConceptRel }}</td>
+                                        <td class="text-center table-td">{{ item.nomConcept }}</td>
+                                        <td class="text-center table-td">{{ item.typeRule }}</td>
+                                        <td class="text-center table-td">{{ item.nomRule }}</td>
+                                        <td class="text-center table-td">{{ item.groupRange }}</td>
+                                        <td class="text-center table-td">{{ item.initialRange }}</td>
+                                        <td class="text-center table-td">{{ item.finalRange }}</td>
+                                        <td class="text-center table-td">{{ item.numAmount }}</td>
+                                        <td class="text-center table-td">{{ item.determinant }}</td>
+                                        <td class="text-center table-td"><button type="button" style="scale: .8"><i class="bi bi-table" style="scale: .8"></i></button></td>
+                                      </tr>
+                                    }
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" (click)="onCloseViewRule()">Cancel</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>

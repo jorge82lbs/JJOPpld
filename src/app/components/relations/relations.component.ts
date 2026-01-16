@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 declare const bootstrap: any; // Añade esto al inicio del archivo
@@ -21,15 +21,15 @@ import { UmDetSelectReq } from '../../models/UmDetSelectReq.model';
 import { UmDetSelectRes } from '../../models/UmDetSelectRes.model';
 
 
+
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-relations',
   imports: [
-    ReactiveFormsModule, 
-    CommonModule,
+    ReactiveFormsModule,
     FormsModule
-  ],
+],
   templateUrl: './relations.component.html',
   styleUrl: './relations.component.css'
 })
