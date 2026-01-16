@@ -1,0 +1,188 @@
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Bienvenido</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <button class="btn btn-outline-light" (click)="onLogout()">Home</button>
+        &nbsp;&nbsp;&nbsp;
+        <button class="btn btn-outline-light" (click)="goRelations()">Relación</button>
+      </ul>
+      <form class="d-flex" role="search">        
+        <button class="btn btn-outline-success" (click)="onLogout()" type="submit">Salir</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-4">
+  <!-- Tabla de Resultados (oculta inicialmente) -->
+  <div class="mt-4">
+    <div class="table-container">
+      <div class="scrollable-container">
+      <table  matSort (matSortChange)="sortData($event)" class="table table-hover table-bordered" >
+        <thead class="table-dark">
+          <tr>
+            <th class="text-center table-td">
+              <button class="btn btn-success" style="scale: .8" data-toggle="modal" data-target="#modalSaveConcept"
+                      (click)="onOpenSaveConcept()"       
+                ><i class="bi bi-plus-circle"></i>&nbsp;Nuevo</button>
+            </th>
+            <th class="text-center">
+              <input 
+                  type="text" 
+                  class="form-control" 
+                  placeholder="Concepto"     
+                  id="conceptAjaxId"      
+                  (keyup)="onSearchTable($event,6)"                
+                >
+            </th>          
+            <th class="text-center table-td"></th>
+            <th class="text-center table-td"></th>
+          </tr>
+          <tr>
+            <th class="text-center table-td"></th>
+            <th mat-sort-header="nomCatalog" class="text-center table-td">Nombre del Catálogo</th>          
+            <th class="text-center table-td">Creado Por</th>
+            <th class="text-center table-td">Fecha Creación</th>
+          </tr>
+        </thead>
+        <tbody>          
+          <tr *ngFor="let item of listConcepts" >
+            <td class="text-center">              
+              <button class="btn btn-primary" style="scale: .8" (click)="onOpenUpdateConcept(item)">
+                <i class="bi bi-pencil" style="scale: .8"></i> 
+              </button>
+              &nbsp;
+              <button class="btn btn-danger" style="scale: .8" (click)="onOpenDeleteConcept(item)">
+                <i class="bi bi-trash" style="scale: .8"></i> 
+              </button>
+
+            </td>            
+            <td class="text-center table-td">{{ item.nomCatalogRisk }}</td>
+            <td class="text-center table-td">{{ item.createdBy }}</td>
+            <td class="text-center table-td">{{ item.fecCreationDate }}</td>
+          </tr>        
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>    
+</div>   
+
+<div class="modal modal-backdrop" tabindex="-1" id="modalSaveConcept">  
+  <div class="modal-container">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header-new" style="text-align: center;">        
+          <h4 style="text-align: center;" id="myModalLabel">Ingrese Concepto a Guardar</h4>
+        </div>    
+        <form [formGroup]="validateForm" (ngSubmit)="onSaveConcept()">
+          <div class="modal-body">            
+            <div class="input-group mb-3">
+              <p>&nbsp;</p>
+              <input 
+                type="text" 
+                class="form-control" 
+                placeholder="Concepto"     
+                required="true" 
+                id="conceptoId" 
+                formControlName="conceptTxt"
+              />
+            </div>   
+          </div>        
+          <div class="modal-footer">            
+            <button type="submit" class="btn btn-success">Guardar</button>
+            &nbsp;
+            <button type="button" class="btn btn-danger" (click)="onCloseSaveConcept()" >Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>  
+
+<div class="modal modal-backdrop" tabindex="-1" id="modalUpdateConcept">  
+  <div class="modal-container">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header" style="text-align: center;">        
+          <h4 style="text-align: center;" id="myModalUpdLabel">Ingrese Concepto a Editar</h4>
+        </div>    
+        <form [formGroup]="validateUpdForm" (ngSubmit)="onUpdateConcept()">
+          <div class="modal-body">
+            <p>&nbsp;</p>          
+            <div class="input-group mb-3">
+              <input 
+                type="text" 
+                class="form-control element-search" 
+                placeholder="Concepto"     
+                required="true" 
+                id="conceptUpdId" 
+                formControlName="conceptUpdTxt"
+              >
+              </div>
+              <div class="modal-body">
+                <input 
+                type="hidden"
+                id="conceptUpdIdTxt"                         
+                class="form-control element-search" 
+                placeholder="conceptUpdIdTxt id"              
+                formControlName="conceptUpdIdTxt"
+                >
+              </div>   
+            </div>        
+          <div class="modal-footer">            
+            <button type="submit" class="btn btn-success">Actualizar</button>
+            &nbsp;
+            <button type="button" class="btn btn-danger" (click)="onCloseUpdateConcept()" >Cancel</button>
+          </div>
+        </form>        
+      </div>
+    </div>
+  </div>
+</div>  
+
+
+<div class="modal modal-backdrop" tabindex="-1" id="modalDeleteConcept">  
+  <div class="modal-container">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header" style="text-align: center;">        
+          <h4 style="text-align: center;" id="myModalDelLabel">Concepto a Eliminar del Módulo</h4>
+        </div>    
+        <form [formGroup]="validateDelForm" (ngSubmit)="onDeleteConcept()">
+          <div class="modal-body">
+            <p>&nbsp;</p>
+            <div class="input-group mb-3">              
+              <input 
+                type="text" 
+                class="form-control element-search" 
+                placeholder="Concepto"     
+                id="conceptDelTxt" 
+                readonly="true"
+                formControlName="conceptDelTxt"
+              >
+              </div>
+              <div class="modal-body">
+                <input 
+                type="hidden"
+                id="conceptDelIdTxt"                         
+                class="form-control element-search" 
+                placeholder="conceptDelIdTxt id"              
+                formControlName="conceptDelIdTxt"
+                >
+              </div>   
+            </div>        
+          <div class="modal-footer">            
+            <button type="submit" class="btn btn-success">Eliminar</button>
+            &nbsp;
+            <button type="button" class="btn btn-danger" (click)="onCloseDeleteConcept()" >Cancel</button>
+          </div>
+        </form>        
+      </div>
+    </div>
+  </div>
+</div>  
