@@ -20,8 +20,6 @@ import { UmbralDetRes } from '../../models/UmbralDetRes.model';
 import { UmDetSelectReq } from '../../models/UmDetSelectReq.model';
 import { UmDetSelectRes } from '../../models/UmDetSelectRes.model';
 
-
-
 import Swal from 'sweetalert2';
 
 @Component({
