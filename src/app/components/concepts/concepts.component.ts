@@ -14,6 +14,8 @@ import {Sort, MatSortModule} from '@angular/material/sort';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
+import { RelMainReq } from '../../models/RelMainReq.model';
+import { RelMainResponse } from '../../models/RelMainResponse.model';
 
 import Swal from 'sweetalert2';
 
@@ -68,6 +70,7 @@ export class ConceptsComponent implements OnInit {
   };
 
   listConcepts: ConceptModelRes[] = [];
+  listRelMainResponse: RelMainResponse[] = [];
   sortedData: ConceptModelRes[] = [];
   listConceptsOriginal: ConceptModelRes[] = [];
   error = false;
@@ -80,6 +83,13 @@ export class ConceptsComponent implements OnInit {
   validateForm: FormGroup;
   validateUpdForm: FormGroup;
   validateDelForm: FormGroup;
+
+  relMainReq: RelMainReq = {
+    idApplication: 0,
+    idCompany: 0,
+    idConceptRel: 0
+  };
+
   conceptReq: ConceptReq = {
     idCatalog: 0,
     idApplication: 1,
@@ -110,7 +120,7 @@ export class ConceptsComponent implements OnInit {
   }
 
   onSearch() {
-    console.log('Listar Conceptos jjo');
+    console.log('Listar Conceptos');
     this.conceptModelReq.idApplication = 1;
     this.conceptModelReq.idCompany = 1;
   
@@ -474,6 +484,38 @@ export class ConceptsComponent implements OnInit {
         default:
           return 0;
       }        
+  }
+
+  onCloseSaveRelMain() {
+    const modal = document.getElementById('modalSaveRelMain');
+    if(modal != null){
+      modal.style.display = 'none';       
+    }
+  }
+
+  onOpenSaveRelMain(item: any){  
+
+    this.relMainReq.idApplication = 1;
+    this.relMainReq.idCompany = 1;
+    this.relMainReq.idConceptRel = item.idConceptRisk;;
+    this.conceptService.searchRelationMain(this.relMainReq).subscribe({
+    next: (response) => {
+      this.listRelMainResponse = response;
+        console.log("Lista concept relacionables: ", this.listRelMainResponse);    
+    },
+      error: () => {
+        this.error = true;
+      }
+    });	  
+
+
+    const modal = document.getElementById('modalSaveRelMain');    
+    if(modal != null){
+      modal.style.display = 'block';              
+    }    
+
+
+
   }
 
 }

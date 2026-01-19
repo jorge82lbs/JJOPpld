@@ -7,6 +7,8 @@ import { RelationReq } from '../models/RelationReq.model';
 import { RelationRes } from '../models/RelationRes.model';
 import { RelationSelectReq } from '../models/RelationSelectReq.model';
 import { RelationSelectRes } from '../models/RelationSelectRes.model';
+import { RelMainReq } from '../models/RelMainReq.model';
+import { RelMainResponse } from '../models/RelMainResponse.model';
 
 @Injectable({ providedIn: 'root' })
 
@@ -15,6 +17,7 @@ export class RelationService {
   private apiUrlCrud = 'http://localhost:8084/api/relation/crudRelation'; 
   private apiUrlCatSel = 'http://localhost:8084/api/relation/getListRelationCat'; 
   private apiUrlRelSel = 'http://localhost:8084/api/relation/getListRelation'; 
+  private apiUrlRelMain = 'http://localhost:8084/api/relation/getListRelationMainCat'; 
   
   constructor(private http: HttpClient) { }
 
@@ -30,5 +33,8 @@ export class RelationService {
     return this.http.post<RelationSelectRes[]>(this.apiUrlRelSel, relationSelectReq);
   }
   
+  searchRelationMain(relMainReq: RelMainReq): Observable<RelMainResponse[]> {
+    return this.http.post<RelMainResponse[]>(this.apiUrlRelMain, relMainReq);
+  }
 
 }

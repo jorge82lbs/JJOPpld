@@ -41,12 +41,14 @@
                   </th>
                   <th class="text-center table-td"></th>
                   <th class="text-center table-td"></th>
+                  <th class="text-center table-td"></th>
                 </tr>
                 <tr>
                   <th class="text-center table-td"></th>
                   <th mat-sort-header="nomCatalog" class="text-center table-td">Nombre del Catálogo</th>
                   <th class="text-center table-td">Creado Por</th>
                   <th class="text-center table-td">Fecha Creación</th>
+                  <th class="text-center table-td">Relacionar</th>
                 </tr>
               </thead>
               <tbody>
@@ -64,6 +66,7 @@
                     <td class="text-center table-td">{{ item.nomCatalogRisk }}</td>
                     <td class="text-center table-td">{{ item.createdBy }}</td>
                     <td class="text-center table-td">{{ item.fecCreationDate }}</td>
+                    <td class="text-center table-td"><button type="button" style="scale: .8" (click)="onOpenSaveRelMain(item)"><i class="bi bi-pencil-square" style="scale: .8"></i></button></td>
                   </tr>
                 }
               </tbody>
@@ -92,18 +95,18 @@
                     id="conceptoId"
                     formControlName="conceptTxt"
                     />
-                  </div>
                 </div>
-                <div class="modal-footer">
-                  <button type="submit" class="btn btn-success">Guardar</button>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Guardar</button>
                   &nbsp;
-                  <button type="button" class="btn btn-danger" (click)="onCloseSaveConcept()" >Cancel</button>
-                </div>
-              </form>
-            </div>
+                <button type="button" class="btn btn-danger" (click)="onCloseSaveConcept()" >Cancel</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
+    </div>
 
       <div class="modal modal-backdrop" tabindex="-1" id="modalUpdateConcept">
         <div class="modal-container">
@@ -187,3 +190,83 @@
                   </div>
                 </div>
               </div>
+
+    <div class="modal modal-backdrop" tabindex="-1" id="modalSaveRelMain">
+      <div class="modal-container">
+        <div class="modal-dialog">
+          <div class="modal-content" style="width: 800px;">
+            <div class="modal-header-new" style="text-align: center;">
+              <h4 style="text-align: center;" id="myModalcp">Seleccione Concepto a Relacionar</h4>
+            </div>            
+            <form [formGroup]="validateForm" (ngSubmit)="onSaveConcept()">
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Guardar</button>
+                  &nbsp;
+                <button type="button" class="btn btn-danger" (click)="onCloseSaveRelMain()" >Cancel</button>
+              </div>
+              <div class="modal-body">
+
+                <div class="container mt-4">                  
+                  <div class="mt-4">
+                    <div class="table-container">
+                      <div class="scrollable-container">
+                        <table  matSort (matSortChange)="sortData($event)" class="table table-hover table-bordered" >
+                          <thead class="table-dark">
+                            <tr>
+                              <th class="text-center table-td">
+                                <button class="btn btn-success" style="scale: .8" data-toggle="modal" data-target="#modalSaveConcept"
+                                  (click)="onOpenSaveConcept()"
+                                  ><i class="bi bi-plus-circle"></i>&nbsp;Nuevo</button>
+                              </th>                              
+                              <th class="text-center">
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="Concepto"
+                                    id="conceptAjaxId"
+                                    (keyup)="onSearchTable($event,6)"
+                                  >
+                              </th>
+                              <th class="text-center table-td"></th>
+                              <th class="text-center table-td"></th>
+                              <th class="text-center table-td"></th>
+                            </tr>
+                            <tr>                              
+                              <th class="text-center table-td">Nombre del Catálogo</th>
+                              <th mat-sort-header="nomCatalog" class="text-center table-td">Catálogo Relacionado</th>
+                              <th class="text-center table-td">Valor</th>
+                              <th class="text-center table-td"></th>                              
+                              <th class="text-center table-td"></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (item of listRelMainResponse; track item) {
+                            <tr >                              
+                              <td class="text-center table-td">{{ item.nomConceptRel }}</td>
+                              <td class="text-center table-td">{{ item.nomCatalogRisk }}</td>
+                              <td class="text-center table-td">{{ item.indValue }}</td>                              
+                              <td class="text-center">
+                                <button class="btn btn-primary" style="scale: .8" (click)="onOpenUpdateConcept(item)">
+                                  <i class="bi bi-pencil" style="scale: .8"></i>
+                                </button>
+                                &nbsp;
+                                <button class="btn btn-danger" style="scale: .8" (click)="onOpenDeleteConcept(item)">
+                                  <i class="bi bi-trash" style="scale: .8"></i>
+                                </button>
+                              </td>
+                              <td class="text-center table-td"><button type="button" style="scale: .8"><i class="bi bi-pencil-square" style="scale: .8"></i></button></td>
+                            </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>              
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>

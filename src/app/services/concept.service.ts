@@ -5,6 +5,8 @@ import { ConceptModelRes } from '../models/ConceptModelRes.model';
 import { ConceptModelReq } from '../models/ConceptModelReq.model';
 import { ConceptReq } from '../models/ConceptReq.model';
 import { ConceptRes } from '../models/ConceptRes.model';
+import { RelMainReq } from '../models/RelMainReq.model';
+import { RelMainResponse } from '../models/RelMainResponse.model';
 
 @Injectable({ providedIn: 'root' })
 
@@ -15,6 +17,7 @@ export class ConceptService {
   private apiUrlSave = 'http://localhost:8084/api/catalog/saveCatalog'; 
   private apiUrlUpdate = 'http://localhost:8084/api/catalog/updateCatalog'; 
   private apiUrlDelete = 'http://localhost:8084/api/catalog/deleteCatalog'; 
+  private apiUrlRelMain = 'http://localhost:8084/api/relation/getListRelationMainCat'; 
   
   constructor(private http: HttpClient) { }
 
@@ -34,4 +37,8 @@ export class ConceptService {
     return this.http.post<ConceptRes>(this.apiUrlDelete, conceptReq);
   }
 
+  searchRelationMain(relMainReq: RelMainReq): Observable<RelMainResponse[]> {
+    return this.http.post<RelMainResponse[]>(this.apiUrlRelMain, relMainReq);
+  }
+  
 }
