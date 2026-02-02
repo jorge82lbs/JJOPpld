@@ -8,7 +8,7 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <button class="btn btn-outline-light" (click)="onLogout()">Home</button>
         &nbsp;&nbsp;&nbsp;
-        <button class="btn btn-outline-light" (click)="goRelations()">Relación</button>
+        <button class="btn btn-outline-light" (click)="goQualify()">Qualify</button>
       </ul>
       <form class="d-flex" role="search">
         <button class="btn btn-outline-success" (click)="onLogout()" type="submit">Salir</button>
@@ -18,255 +18,757 @@
 </nav>
 
 <div class="container mt-4">
-  <!-- Tabla de Resultados (oculta inicialmente) -->
+    <div class="mt-4">
+      <div class="input-group mb-3">
+         <input
+            type="text"
+            class="form-control"
+            placeholder="Valor"
+            style="text-align: center; font-weight: bold;"
+            disabled
+            id="valueId" value="{{ conceptTxtMain }}"
+          >
+      </div>
+    </div>
+</div>
+
+
+<!-- Tabla para mostrar Umbral  -->
+<div class="container mt-4" style="height: 220px;">  
+  <div class="mt-4">
+    <h4 class="subtitle">Umbral</h4>
+    <div class="table-container">
+      <div class="scrollable-container">
+        <table  class="table table-hover table-bordered" >
+          <thead class="table-dark">
+            <tr>
+              <th class="text-center table-td">
+                <button class="btn btn-success" style="scale: .8" data-toggle="modal" (click)="onOpenSaveUmbral()"><i class="bi bi-plus-circle">
+                  </i>&nbsp;Nuevo
+                </button>
+              </th>
+              <th class="text-center table-td">Impacto</th>
+              <th class="text-center table-td">Probabilidad</th>
+              <th class="text-center table-td">Rango Inicial</th>
+              <th class="text-center table-td">Rango Final</th>              
+            </tr>            
+          </thead>
+          <tbody>
+            @for (item of listUmbral; track item) {
+            <tr>                              
+              <td class="text-center table-td">
+                <button class="btn btn-primary" style="scale: .8" (click)="onOpenUpdateUmbral(item)">
+                  <i class="bi bi-pencil" style="scale: .8"></i>
+                </button>
+                &nbsp;
+                <button class="btn btn-danger" style="scale: .8" (click)="onOpenDeleteUmbral(item)">
+                  <i class="bi bi-trash" style="scale: .8"></i>
+                </button>
+              </td>
+              <td class="text-center table-td">{{ item.indImpact }}</td>
+              <td class="text-center table-td">{{ item.indProbabilty }}</td>
+              <td class="text-center table-td">{{ item.numInitial }}</td>
+              <td class="text-center table-td">{{ item.numFinal }}</td>
+              
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>      
+    </div>
+  </div>
+</div>
+
+<div class="container mt-4">
+    <div class="mt-4">
+      <h4 class="subtitle">Conceptos</h4>
+      <div class="input-group mb-3">
+        <input type="file" class="form-control" (change)="onFileSelected($event)" accept=".xls,.xlsx,.XLS,.XLSX">
+        <button class="btn btn-success" style="scale: .9" (click)="onUpload()">
+          <i class="bi bi-cloud-upload" style="scale: .9"></i>
+        </button>
+      </div>
+    </div>
+</div>
+<!-- Tabla Principal Nivel 1  -->
+<div class="container mt-4">  
   <div class="mt-4">
     <div class="table-container">
       <div class="scrollable-container">
         <table  matSort (matSortChange)="sortData($event)" class="table table-hover table-bordered" >
           <thead class="table-dark">
-            <tr>
+            <tr
+            >
               <th class="text-center table-td">
-                <button class="btn btn-success" style="scale: .8" data-toggle="modal" data-target="#modalSaveConcept"
+                <button class="btn btn-success" style="scale: .8" data-toggle="modal"
                   (click)="onOpenSaveConcept()"
                   ><i class="bi bi-plus-circle"></i>&nbsp;Nuevo</button>
-                </th>
-                <th class="text-center">
+              </th>                              
+              <th class="text-center">
                   <input
                     type="text"
                     class="form-control"
                     placeholder="Concepto"
-                    id="conceptAjaxId"
-                    (keyup)="onSearchTable($event,6)"
-                    >
-                  </th>
-                  <th class="text-center table-td"></th>
-                  <th class="text-center table-td"></th>
-                  <th class="text-center table-td"></th>
-                </tr>
-                <tr>
-                  <th class="text-center table-td"></th>
-                  <th mat-sort-header="nomCatalog" class="text-center table-td">Nombre del Catálogo</th>
-                  <th class="text-center table-td">Creado Por</th>
-                  <th class="text-center table-td">Fecha Creación</th>
-                  <th class="text-center table-td">Relacionar</th>
-                </tr>
-              </thead>
-              <tbody>
-                @for (item of listConcepts; track item) {
-                  <tr >
-                    <td class="text-center">
-                      <button class="btn btn-primary" style="scale: .8" (click)="onOpenUpdateConcept(item)">
-                        <i class="bi bi-pencil" style="scale: .8"></i>
-                      </button>
-                      &nbsp;
-                      <button class="btn btn-danger" style="scale: .8" (click)="onOpenDeleteConcept(item)">
-                        <i class="bi bi-trash" style="scale: .8"></i>
-                      </button>
-                    </td>
-                    <td class="text-center table-td">{{ item.nomCatalogRisk }}</td>
-                    <td class="text-center table-td">{{ item.createdBy }}</td>
-                    <td class="text-center table-td">{{ item.fecCreationDate }}</td>
-                    <td class="text-center table-td"><button type="button" style="scale: .8" (click)="onOpenSaveRelMain(item)"><i class="bi bi-pencil-square" style="scale: .8"></i></button></td>
-                  </tr>
-                }
-              </tbody>
-            </table>
+                    id="conRelAjaxId"
+                    (keyup)="onSearchTableRel($event,6)"
+                  >
+              </th>
+              <th class="text-center table-td"></th>
+              <th class="text-center table-td"></th>
+              
+            </tr>
+            <tr>                              
+              <th class="text-center table-td">Opciones</th>
+              <th class="text-center table-td">Catálogo Relacionado</th>
+              <th class="text-center table-td">Valor</th>
+              <th class="text-center table-td">SubCatálogos</th>                              
+              
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of listRelMainResponse; track item) {
+            <tr>                              
+              <td class="text-center table-td">
+                <button class="btn btn-primary" style="scale: .8" (click)="onOpenUpdateConcept(item)">
+                  <i class="bi bi-pencil" style="scale: .8"></i>
+                </button>
+                &nbsp;
+                <button class="btn btn-danger" style="scale: .8" (click)="onOpenDeleteConcept(item)">
+                  <i class="bi bi-trash" style="scale: .8"></i>
+                </button>
+              </td>
+              <td class="text-center table-td">{{ item.nomCatalogRisk }}</td>
+              <td class="text-center table-td">{{ item.indValue }}</td>                                            
+              <td class="text-center table-td"><button type="button" style="scale: .8" (click)="onOpenNivel2Popup(item)"><i class="bi bi-pencil-square" style="scale: .8"></i></button></td>
+              
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>      
+    </div>
+  </div>
+</div>
+
+<div class="modal modal-backdrop" tabindex="-1" id="modalUpdateConcept">
+  <div class="modal-container">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header" style="text-align: center;">
+          <h4 style="text-align: center;" id="myModalUpdLabel">Ingrese Concepto a Editar</h4>
+        </div>
+        <form [formGroup]="validateUpdForm" (ngSubmit)="onUpdateConcept()">
+        <div class="modal-body">
+          <p>&nbsp;</p>
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              readonly
+              class="form-control element-search"
+              placeholder="Concepto"                      
+              id="conceptUpdId"
+              formControlName="conceptUpdTxt"
+            >
+          </div>
+          <div class="input-group mb-3">
+            <input
+              type="number"
+              class="form-control element-search"
+              placeholder="Valor"
+              id="valorUpdId"
+              style="width: 100px;"
+              formControlName="valorUpdTxt"
+            >
+          </div>
+          <div class="modal-body">
+            <input
+              type="hidden"
+              id="conceptUpdIdTxt"
+              class="form-control element-search"
+              placeholder="conceptUpdIdTxt id"
+              formControlName="conceptUpdIdTxt"
+              >
           </div>
         </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Actualizar</button>
+          &nbsp;
+          <button type="button" class="btn btn-danger" (click)="onCloseUpdateConcept()" >Cancel</button>
+        </div>
+        </form>
       </div>
     </div>
+  </div>
+</div>
 
-    <div class="modal modal-backdrop" tabindex="-1" id="modalSaveConcept">
-      <div class="modal-container">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header-new" style="text-align: center;">
-              <h4 style="text-align: center;" id="myModalLabel">Ingrese Concepto a Guardar</h4>
-            </div>
-            <form [formGroup]="validateForm" (ngSubmit)="onSaveConcept()">
-              <div class="modal-body">
-                <div class="input-group mb-3">
-                  <p>&nbsp;</p>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Concepto"
-                    required="true"
-                    id="conceptoId"
+<div class="modal modal-backdrop" tabindex="-1" id="modalSaveRelation">  
+  <div class="modal-container">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header-new" style="text-align: center;">        
+          <h4 style="text-align: center;" id="myModalL">Ingrese Concepto a Relacionar</h4>
+        </div>    
+        <form [formGroup]="sonForm" (ngSubmit)="onSaveRelConcept()">
+          <div class="modal-body">            
+              
+              <p>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    placeholder="Concepto Relacionado"     
+                    required="true" 
+                    id="conceptTxtHtml"
+                    style="width: 95%;"
                     formControlName="conceptTxt"
-                    />
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="submit" class="btn btn-success">Guardar</button>
-                  &nbsp;
-                <button type="button" class="btn btn-danger" (click)="onCloseSaveConcept()" >Cancel</button>
-              </div>
-            </form>
+                >
+              </p> 
+            
+            <div class="input-group" style="text-align: center;">
+              <p style="text-align: center;"> 
+                <input 
+                  type="number" 
+                  id="valorTxtHtml"
+                  class="form-control" 
+                  placeholder="Valor" 
+                  style="width: 100px;"
+                  formControlName="valueTxt"
+                >
+              </p> 
+            </div>   
+          </div>        
+          <div class="modal-footer">            
+            <button type="submit" class="btn btn-success">Guardar</button>
+            &nbsp;
+            <button type="button" class="btn btn-danger" (click)="onCloseSaveConcept()">Cancel</button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
+  </div>
+</div>  
 
-      <div class="modal modal-backdrop" tabindex="-1" id="modalUpdateConcept">
-        <div class="modal-container">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header" style="text-align: center;">
-                <h4 style="text-align: center;" id="myModalUpdLabel">Ingrese Concepto a Editar</h4>
-              </div>
-              <form [formGroup]="validateUpdForm" (ngSubmit)="onUpdateConcept()">
-                <div class="modal-body">
-                  <p>&nbsp;</p>
-                  <div class="input-group mb-3">
-                    <input
-                      type="text"
-                      class="form-control element-search"
-                      placeholder="Concepto"
-                      required="true"
-                      id="conceptUpdId"
-                      formControlName="conceptUpdTxt"
-                      >
-                    </div>
-                    <div class="modal-body">
-                      <input
-                        type="hidden"
-                        id="conceptUpdIdTxt"
-                        class="form-control element-search"
-                        placeholder="conceptUpdIdTxt id"
-                        formControlName="conceptUpdIdTxt"
-                        >
-                      </div>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="submit" class="btn btn-success">Actualizar</button>
-                      &nbsp;
-                      <button type="button" class="btn btn-danger" (click)="onCloseUpdateConcept()" >Cancel</button>
-                    </div>
-                  </form>
+
+<div class="modal modal-backdrop" tabindex="-1" id="modalPopupN2">
+  <div class="modal-container">
+    <div class="modal-dialog">
+      <div class="modal-content" style="width: 800px;">
+        <div class="modal-header-new" style="text-align: center;">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Valor"
+            style="text-align: center"
+            disabled
+            id="valueId" value="{{ conceptTxtTitle }}"
+          >          
+        </div>                              
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" (click)="onClosePopupN2()" >Cerrar</button>
+        </div>
+        <div class="modal-footer">
+          <div class="input-group mb-3">
+            <input type="file" class="form-control" (change)="onFileSelectedN2($event)" accept=".xls,.xlsx,.XLS,.XLSX">
+            <button class="btn btn-success" style="scale: .9" (click)="onUploadN2()">
+              <i class="bi bi-cloud-upload" style="scale: .9"></i>
+            </button>
+          </div>
+        </div>  
+        <div class="modal-footer">
+          <div class="container mt-4">                  
+            <div class="mt-4">
+              <div class="table-container">
+                <div class="scrollable-container">
+                  <table  matSort (matSortChange)="sortData($event)" class="table table-hover table-bordered" >
+                    <thead class="table-dark">  
+                      <tr>
+                        <th class="text-center table-td">
+                          <button class="btn btn-success" style="scale: .8" data-toggle="modal"
+                            (click)="onOpenSaveConceptN2()"
+                            ><i class="bi bi-plus-circle"></i>&nbsp;Nuevo</button>
+                        </th>                              
+                        <th class="text-center">
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Concepto"
+                              id="conRelAjaxId"
+                              (keyup)="onSearchTableRelN2($event,6)"
+                            >
+                        </th>
+                        <th class="text-center table-td"></th>                      
+                        <th class="text-center table-td"></th>                      
+                      </tr>
+                      <tr>                              
+                        <th class="text-center table-td">Opciones</th>
+                        <th class="text-center">Nombre del Concepto</th>
+                        <th class="text-center table-td">Valor</th>
+                        <th class="text-center table-td">Fuentes</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (item of listRelMainNiv2; track item) {
+                      <tr>                              
+                        <td class="text-center">
+                          <button class="btn btn-primary" style="scale: .8" (click)="onOpenUpdateConceptN2(item)">
+                            <i class="bi bi-pencil" style="scale: .8"></i>
+                          </button>
+                          &nbsp;
+                          <button class="btn btn-danger" style="scale: .8" (click)="onOpenDeleteConceptN2(item)">
+                            <i class="bi bi-trash" style="scale: .8"></i>
+                          </button>
+                        </td>
+                        <td class="text-center table-td">{{ item.nomCatalogRisk }}</td>
+                        <td class="text-center table-td">{{ item.indValue }}</td>
+                        <td class="text-center table-td"><button type="button" style="scale: .8" (click)="onOpenNivel3Popup(item)"><i class="bi bi-pencil-square" style="scale: .8"></i></button></td>
+                      </tr>
+                      }
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
           </div>
-
-
-          <div class="modal modal-backdrop" tabindex="-1" id="modalDeleteConcept">
-            <div class="modal-container">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header" style="text-align: center;">
-                    <h4 style="text-align: center;" id="myModalDelLabel">Concepto a Eliminar del Módulo</h4>
-                  </div>
-                  <form [formGroup]="validateDelForm" (ngSubmit)="onDeleteConcept()">
-                    <div class="modal-body">
-                      <p>&nbsp;</p>
-                      <div class="input-group mb-3">
-                        <input
-                          type="text"
-                          class="form-control element-search"
-                          placeholder="Concepto"
-                          id="conceptDelTxt"
-                          readonly="true"
-                          formControlName="conceptDelTxt"
-                          >
-                        </div>
-                        <div class="modal-body">
-                          <input
-                            type="hidden"
-                            id="conceptDelIdTxt"
-                            class="form-control element-search"
-                            placeholder="conceptDelIdTxt id"
-                            formControlName="conceptDelIdTxt"
-                            >
-                          </div>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="submit" class="btn btn-success">Eliminar</button>
-                          &nbsp;
-                          <button type="button" class="btn btn-danger" (click)="onCloseDeleteConcept()" >Cancel</button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-    <div class="modal modal-backdrop" tabindex="-1" id="modalSaveRelMain">
-      <div class="modal-container">
-        <div class="modal-dialog">
-          <div class="modal-content" style="width: 800px;">
-            <div class="modal-header-new" style="text-align: center;">
-              <h4 style="text-align: center;" id="myModalcp">Seleccione Concepto a Relacionar</h4>
-            </div>            
-            <form [formGroup]="validateForm" (ngSubmit)="onSaveConcept()">
-              <div class="modal-footer">
-                <button type="submit" class="btn btn-success">Guardar</button>
-                  &nbsp;
-                <button type="button" class="btn btn-danger" (click)="onCloseSaveRelMain()" >Cancel</button>
-              </div>
-              <div class="modal-body">
-
-                <div class="container mt-4">                  
-                  <div class="mt-4">
-                    <div class="table-container">
-                      <div class="scrollable-container">
-                        <table  matSort (matSortChange)="sortData($event)" class="table table-hover table-bordered" >
-                          <thead class="table-dark">
-                            <tr>
-                              <th class="text-center table-td">
-                                <button class="btn btn-success" style="scale: .8" data-toggle="modal" data-target="#modalSaveConcept"
-                                  (click)="onOpenSaveConcept()"
-                                  ><i class="bi bi-plus-circle"></i>&nbsp;Nuevo</button>
-                              </th>                              
-                              <th class="text-center">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="Concepto"
-                                    id="conceptAjaxId"
-                                    (keyup)="onSearchTable($event,6)"
-                                  >
-                              </th>
-                              <th class="text-center table-td"></th>
-                              <th class="text-center table-td"></th>
-                              <th class="text-center table-td"></th>
-                            </tr>
-                            <tr>                              
-                              <th class="text-center table-td">Nombre del Catálogo</th>
-                              <th mat-sort-header="nomCatalog" class="text-center table-td">Catálogo Relacionado</th>
-                              <th class="text-center table-td">Valor</th>
-                              <th class="text-center table-td"></th>                              
-                              <th class="text-center table-td"></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            @for (item of listRelMainResponse; track item) {
-                            <tr >                              
-                              <td class="text-center table-td">{{ item.nomConceptRel }}</td>
-                              <td class="text-center table-td">{{ item.nomCatalogRisk }}</td>
-                              <td class="text-center table-td">{{ item.indValue }}</td>                              
-                              <td class="text-center">
-                                <button class="btn btn-primary" style="scale: .8" (click)="onOpenUpdateConcept(item)">
-                                  <i class="bi bi-pencil" style="scale: .8"></i>
-                                </button>
-                                &nbsp;
-                                <button class="btn btn-danger" style="scale: .8" (click)="onOpenDeleteConcept(item)">
-                                  <i class="bi bi-trash" style="scale: .8"></i>
-                                </button>
-                              </td>
-                              <td class="text-center table-td"><button type="button" style="scale: .8"><i class="bi bi-pencil-square" style="scale: .8"></i></button></td>
-                            </tr>
-                            }
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-              </div>              
-            </form>
-          </div>
         </div>
+        
       </div>
     </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" id="modalUpdateConceptN2">
+  <div class="modal-container">      
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header" style="text-align: center;">
+          <h4 style="text-align: center;" id="myModalUpdLabelN3">Ingrese Valor a Editar</h4>
+        </div>
+        <form [formGroup]="validateUpdFormN2" (ngSubmit)="onUpdateConceptN2()">
+        <div class="modal-body">
+          <p>&nbsp;</p>
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              readonly
+              class="form-control element-search"
+              placeholder="Concepto"                      
+              id="conceptUpdIdN2"
+              formControlName="conceptUpdN2Txt"
+            >
+          </div>
+          <div class="input-group mb-3">
+            <input
+              type="number"
+              class="form-control element-search"
+              placeholder="Valor"
+              id="valorUpdIdN2"
+              style="width: 100px;"
+              formControlName="valorUpdN2Txt"
+            >
+          </div>
+          <div class="modal-body">
+            <input
+              type="hidden"
+              id="conceptUpdIdTxtN2"
+              class="form-control element-search"
+              placeholder="conceptUpdIdTxt id"
+              formControlName="conceptUpdIdN2Txt"
+              >
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Actualizar</button>
+          &nbsp;
+          <button type="button" class="btn btn-danger" (click)="onCloseUpdateConceptN2()" >Cancel</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" id="modalSaveRelMainAlta">
+  <div class="modal-container">
+    <div class="modal-dialog">
+      <div class="modal-content" style="width: 800px;">
+        <div class="modal-footer">
+            <input
+            type="text"
+            class="form-control"
+            placeholder="Valor"
+            style="text-align: center"
+            disabled
+            id="valueIdss" value="Agregar a Concepto"
+          >
+        </div>  
+        <form [formGroup]="sonFormN2" (ngSubmit)="onSaveRelConceptN2()">
+        <div class="modal-body">
+          <p>
+            <input 
+              type="text" 
+              class="form-control" 
+              placeholder="Concepto Relacionado"     
+              required="true" 
+              id="conceptN2TxtHtml"
+              style="width: 95%;"
+              formControlName="conceptN2Txt"
+            >
+          </p>             
+          <div class="input-group" style="text-align: center;">
+            <p style="text-align: center;"> 
+              <input 
+                type="number" 
+                id="valorN2TxtHtml"
+                class="form-control" 
+                placeholder="Valor" 
+                style="width: 100px;"
+                formControlName="valueN2Txt"
+              >
+            </p> 
+          </div>  
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Guardar</button>
+          &nbsp;      
+          <button type="button" class="btn btn-danger" (click)="onCloseSaveRelMainAlta()" >Cancel</button>
+        </div>  
+        </form>                   
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal modal-backdrop" tabindex="-1" id="modalPopupN3">
+  <div class="modal-container">
+    <div class="modal-dialog">
+      <div class="modal-content" style="width: 700px;">
+        <div class="modal-header-new" style="text-align: center;">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Valor"
+            style="text-align: center"
+            disabled
+            id="valueIdN3" value="{{ conceptTxtTitleN3 }}"
+          >          
+        </div>                              
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" (click)="onCloseSaveRelMainN3()" >Cerrar</button>
+        </div>
+        <div class="modal-footer">
+          <div class="input-group mb-3">
+            <input type="file" class="form-control" (change)="onFileSelectedN3($event)" accept=".xls,.xlsx,.XLS,.XLSX">
+            <button class="btn btn-success" style="scale: .9" (click)="onUploadN3()">
+              <i class="bi bi-cloud-upload" style="scale: .9"></i>
+            </button>
+          </div>
+          <label>
+            Con Atributo!
+            <input type="checkbox" [(ngModel)]="isChecked" name="myCheckbox">
+          </label>
+        </div>  
+        <div class="modal-footer">
+          <div class="container mt-4">                  
+            <div class="mt-4">
+              <div class="table-container">
+                <div class="scrollable-container">
+                  <table  matSort (matSortChange)="sortData($event)" class="table table-hover table-bordered" >
+                    <thead class="table-dark">  
+                      <tr>
+                        <th class="text-center table-td">
+                          <button class="btn btn-success" style="scale: .8" data-toggle="modal"
+                            (click)="onOpenSaveConceptN3()"
+                            ><i class="bi bi-plus-circle"></i>&nbsp;Nuevo</button>
+                        </th>                              
+                        <th class="text-center">
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Concepto"
+                              id="conRelAjaxIdN4"
+                              (keyup)="onSearchTableRelN3($event,6)"
+                            >
+                        </th>
+                        <th class="text-center table-td"></th>                      
+                      </tr>
+                      <tr>                              
+                        <th class="text-center table-td">Opciones</th>
+                        <th class="text-center">Nombre del Concepto</th>
+                        <th class="text-center table-td">Valor</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (item of listRelMainNiv3; track item) {
+                      <tr>                              
+                        <td class="text-center">
+                          <button class="btn btn-primary" style="scale: .8" (click)="onOpenUpdateConceptN3(item)">
+                            <i class="bi bi-pencil" style="scale: .8"></i>
+                          </button>
+                          &nbsp;
+                          <button class="btn btn-danger" style="scale: .8" (click)="onOpenDeleteConceptN3(item)">
+                            <i class="bi bi-trash" style="scale: .8"></i>
+                          </button>
+                        </td>
+                        <td class="text-center table-td">{{ item.nomCatalogRisk }}</td>
+                        <td class="text-center table-td">{{ item.indValue }}</td>                        
+                      </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" id="modalUpdateConceptN3">
+  <div class="modal-container">      
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header" style="text-align: center;">
+          <h4 style="text-align: center;" id="myModalUpdLabelN3">Ingrese Valor a Editar</h4>
+        </div>
+        <form [formGroup]="validateUpdFormN3" (ngSubmit)="onUpdateConceptN3()">
+        <div class="modal-body">
+          <p>&nbsp;</p>
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              readonly
+              class="form-control element-search"
+              placeholder="Concepto"                      
+              id="conceptUpdIdN3"
+              formControlName="conceptUpdN3Txt"
+            >
+          </div>
+          <div class="input-group mb-3">
+            <input
+              type="number"
+              class="form-control element-search"
+              placeholder="Valor"
+              id="valorUpdIdN3"
+              style="width: 100px;"
+              formControlName="valorUpdN3Txt"
+            >
+          </div>
+          <div class="modal-body">
+            <input
+              type="hidden"
+              id="conceptUpdIdTxtN3"
+              class="form-control element-search"
+              placeholder="conceptUpdIdTxt id"
+              formControlName="conceptUpdIdN3Txt"
+              >
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Actualizar</button>
+          &nbsp;
+          <button type="button" class="btn btn-danger" (click)="onCloseUpdateConceptN3()" >Cancel</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" id="modalSaveRelMainAltaN3">
+  <div class="modal-container">
+    <div class="modal-dialog">
+      <div class="modal-content" style="width: 700px;">
+        <div class="modal-footer">
+            <input
+            type="text"
+            class="form-control"
+            placeholder="Valor"
+            style="text-align: center"
+            disabled
+            id="valueIdssN4" value="Agregar a Concepto"
+          >
+        </div>  
+        <form [formGroup]="sonFormN3" (ngSubmit)="onSaveRelConceptN3()">
+        <div class="modal-body">
+          <p>
+            <input 
+              type="text" 
+              class="form-control" 
+              placeholder="Concepto Relacionado"     
+              required="true" 
+              id="conceptN3TxtHtml"
+              style="width: 95%;"
+              formControlName="conceptN3Txt"
+            >
+          </p>             
+          <div class="input-group" style="text-align: center;">
+            <p style="text-align: center;"> 
+              <input 
+                type="number" 
+                id="valorN3TxtHtml"
+                class="form-control" 
+                placeholder="Valor" 
+                style="width: 100px;"
+                formControlName="valueN3Txt"
+              >
+            </p> 
+          </div>  
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Guardar</button>
+          &nbsp;      
+          <button type="button" class="btn btn-danger" (click)="onCloseSaveRelMainAltaN3()" >Cancel</button>
+        </div>  
+        </form>                   
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal modal-backdrop" tabindex="-1" id="modalSaveUmbral">  
+  <div class="modal-container">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header-new" style="text-align: center;">        
+          <h4 style="text-align: center;" id="myModalUm">Ingrese La Siguiente Información</h4>
+        </div>    
+        <form [formGroup]="umbralForm" (ngSubmit)="onSaveUmbralAction()">
+          <div class="modal-body">
+            <p>
+              <input 
+                  type="text" 
+                  class="form-control" 
+                  placeholder="Impacto"     
+                  required="true" 
+                  id="impactTxtHtml"
+                  style="width: 95%;"
+                  formControlName="impactTxt"
+              >
+            </p> 
+            <p>
+              <input 
+                  type="text" 
+                  class="form-control" 
+                  placeholder="Probabilidad"     
+                  required="true" 
+                  id="probabilityTxtHtml"
+                  style="width: 95%;"
+                  formControlName="probabilityTxt"
+              >
+            </p> 
+            <div class="input-group" style="text-align: center;">
+              <p style="text-align: center;"> 
+                <input 
+                  type="number" 
+                  id="rangeIniTxtHtml"
+                  class="form-control" 
+                  placeholder="Rango Inicial" 
+                  style="width: 100px;"
+                  formControlName="rangeIniTxt"
+                >
+              </p> 
+            </div>   
+            <div class="input-group" style="text-align: center;">
+              <p style="text-align: center;"> 
+                <input 
+                  type="number" 
+                  id="rangeFinTxtHtml"
+                  class="form-control" 
+                  placeholder="Rango Final" 
+                  style="width: 100px;"
+                  formControlName="rangeFinTxt"
+                >
+              </p> 
+            </div>   
+          </div>        
+          <div class="modal-footer">            
+            <button type="submit" class="btn btn-success">Guardar</button>
+            &nbsp;
+            <button type="button" class="btn btn-danger" (click)="onCloseSaveUmbral()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>  
+
+
+<div class="modal modal-backdrop" tabindex="-1" id="modalUpdateUmbral">  
+  <div class="modal-container">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header-new" style="text-align: center;">        
+          <h4 style="text-align: center;" id="myModalUm">Actualizar Umbral</h4>
+        </div>    
+        <form [formGroup]="umbralUpdForm" (ngSubmit)="onUpdateUmbralAction()">
+          <div class="modal-body">
+            <p>
+              <input 
+                  type="text" 
+                  class="form-control" 
+                  placeholder="Impacto"     
+                  required="true" 
+                  id="impactUpdTxtHtml"
+                  style="width: 95%;"
+                  formControlName="impactUpdTxt"
+              >
+            </p> 
+            <p>
+              <input 
+                  type="text" 
+                  class="form-control" 
+                  placeholder="Probabilidad"     
+                  required="true" 
+                  id="probabilityUpdTxtHtml"
+                  style="width: 95%;"
+                  formControlName="probabilityUpdTxt"
+              >
+            </p> 
+            <div class="input-group" style="text-align: center;">
+              <p style="text-align: center;"> 
+                <input 
+                  type="number" 
+                  id="rangeIniUpdTxtHtml"
+                  class="form-control" 
+                  placeholder="Rango Inicial" 
+                  style="width: 100px;"
+                  formControlName="rangeIniUpdTxt"
+                >
+              </p> 
+            </div>   
+            <div class="input-group" style="text-align: center;">
+              <p style="text-align: center;"> 
+                <input 
+                  type="number" 
+                  id="rangeFinUpdTxtHtml"
+                  class="form-control" 
+                  placeholder="Rango Final" 
+                  style="width: 100px;"
+                  formControlName="rangeFinUpdTxt"
+                >
+              </p> 
+            </div>   
+            <div class="modal-body">
+              <input
+                type="hidden"
+                id="umbralUpdIdTxt"
+                class="form-control element-search"
+                placeholder="umbralUpdIdTxt id"
+                formControlName="umbralUpdIdTxt"
+                >
+            </div>
+          </div>        
+          <div class="modal-footer">            
+            <button type="submit" class="btn btn-success">Guardar</button>
+            &nbsp;
+            <button type="button" class="btn btn-danger" (click)="onCloseUpdateUmbral()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>  

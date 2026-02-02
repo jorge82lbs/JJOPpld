@@ -6,8 +6,9 @@ export interface RelMainResponse{
     idApplication: number; 
     idCompany: number; 
     idConceptRel: number; 
-    nomConceptRel: number; 
+    nomConceptRel: string; 
     idConcept: number; 
     indEstatus: string;     
     indValue: number;    
+    indNivel: number;    
 }

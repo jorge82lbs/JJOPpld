@@ -366,7 +366,10 @@ constructor(
 
   conceptModelReq: ConceptModelReq = {
     idApplication: 0,
-    idCompany: 0 
+    idCompany: 0, 
+    idConceptRisk: 0,
+    isList: 0,
+    nomConceptRisk: ""
   };
   relationModelReq: RelationReq = {
     idRelation: 0,

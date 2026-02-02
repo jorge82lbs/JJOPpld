@@ -1,0 +1,165 @@
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Bienvenido</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <button class="btn btn-outline-light" (click)="onLogout()">Home</button>
+        &nbsp;&nbsp;&nbsp;
+        <button class="btn btn-outline-light" (click)="goConcepts()">Conceptos</button>
+      </ul>
+      <form class="d-flex" role="search">
+        <button class="btn btn-outline-success" (click)="onLogout()" type="submit">Salir</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-4">
+    <div class="mt-4">
+      <div class="input-group mb-3">        
+         <input
+            type="text"
+            class="form-control"
+            placeholder="Valor"
+            style="text-align: center; font-weight: bold;"
+            disabled
+            id="valueId" value="{{ conceptTxtMain }}"
+          >
+      </div>
+    </div>
+</div>
+
+<div class="container mt-4">
+    <div class="mt-4">
+      <form [formGroup]="clientForm" (ngSubmit)="getClientsSelect()">
+      <div class="input-group mb-3">
+        <select #mySelect class="form-select" size="1" aria-label="Size 1 select example" (change)="onSelectionChangeClient($event)"> 
+          <option value="0">Seleccione Cliente</option>
+          <option value="{{ item.idClient }}" *ngFor="let item of listClients">
+            {{ item.indRfc }} - {{ item.indDescription }}
+          </option>
+        </select>
+      </div>
+      </form>
+    </div>
+</div>
+<!-- Tabla Principal Nivel 1  -->
+<div class="container mt-4" style="height: 370px;">  
+  <div class="mt-4">
+    <div class="table-container">
+      <div class="scrollable-container">
+        <table  class="table table-hover table-bordered" >
+          <thead class="table-dark">            
+            <tr>                                            
+              <th class="text-center table-td">Grupo de Riesgos</th>
+              <th class="text-center table-td">Porcentaje</th>
+              <th class="text-center table-td">Riesgo</th>              
+              <th class="text-center table-td">SubGrupo</th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of listConceptNivel1; track item) {
+            <tr>                              
+              <td class="text-center table-td">{{ item.nomCatalogRisk }}</td>
+              <td class="text-center table-td">{{ item.indValue }}</td>
+              <td class="text-center table-td">{{ item.catCalif }}</td>              
+              <td class="text-center table-td"><button type="button" style="scale: .8" (click)="onOpenNivel2Popup(item)"><i class="bi bi-filter-square" style="scale: .8"></i></button></td>
+              
+            </tr>
+            }
+            <tr>                                            
+              <th class="text-center table-td"></th>
+              <th class="text-center table-td">{{ totalPorcent }}</th>
+              <th class="text-center table-td">{{ totalRisk }}</th>
+              <th class="text-center table-td"><p [style.color]="getColorClass()">{{ totalRiskDescription }}</p></th>              
+            </tr>
+          </tbody>
+        </table>
+      </div>      
+    </div>
+  </div>
+</div>
+
+<!-- Tabla Nivel 2  -->
+<div class="container mt-4">  
+  <div class="mt-4">         
+    <div class="table-container">
+      <div class="modal-footer">            
+         <input
+            type="text"
+            class="form-control"
+            placeholder="Valor"
+            style="text-align: right; font-weight: bold;"
+            disabled
+            id="valueIddd" value="Matriz de Riesgos: {{ nomCatalogN2 }}"
+          >
+      </div>
+      <div class="scrollable-container">
+        <table class="table table-hover table-bordered" >
+          <thead class="table-dark">                        
+            <tr>
+              <th class="text-center">Nombre del Concepto</th>
+              <th class="text-center table-td">Valor</th>
+              <th class="text-center table-td">Asignado</th>
+              <th class="text-center table-td">Fuentes</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of listRelMainNiv2; track item) {
+            <tr>                                                      
+              <td class="text-center table-td">{{ item.nomConcept }}</td>
+              <td class="text-center table-td">{{ item.numQualified }}</td>
+              <td class="text-center table-td">{{ item.nomConceptDown }}</td>
+              <td class="text-center table-td"><button type="button" style="scale: .8" (click)="onOpenNivel3Popup(item)"><i class="bi bi-pencil-square" style="scale: .8"></i></button></td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>      
+    </div>
+  </div>
+</div>
+
+<div class="modal modal-backdrop" tabindex="-1" id="modalQty">  
+  <div class="modal-container">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header-new" style="text-align: center;">        
+          <h4 style="text-align: center;" id="myModalQty">Calificar</h4>
+        </div>    
+        <form [formGroup]="qtyForm" (ngSubmit)="onQtyAction()">
+          <div class="modal-body">
+            <p>
+              <input 
+                  type="text" 
+                  class="form-control" 
+                  placeholder="Concepto"
+                  readonly
+                  id="conceptQtyTxtHtml"                  
+                  formControlName="conceptQtyTxt"
+              >
+            </p>
+            <div class="input-group mb-3">
+              <select #myQtySelect class="form-select" size="1" aria-label="Size 1 select example" (change)="onSelectionChangeQty($event)" formControlName="idRelationQtyTxt"> 
+                <option value="0">Seleccione..</option>
+                <option value="{{ item.idRelation }}" *ngFor="let item of listRelMainNiv3">
+                  {{ item.nomCatalogRisk }} - {{ item.indValue }}
+                </option>
+              </select>
+            </div>
+          
+          </div>        
+          <div class="modal-footer">            
+            <button type="submit" class="btn btn-success">Guardar</button>
+            &nbsp;
+            <button type="button" class="btn btn-danger" (click)="onCloseQtyAction()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>  

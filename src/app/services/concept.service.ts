@@ -7,6 +7,7 @@ import { ConceptReq } from '../models/ConceptReq.model';
 import { ConceptRes } from '../models/ConceptRes.model';
 import { RelMainReq } from '../models/RelMainReq.model';
 import { RelMainResponse } from '../models/RelMainResponse.model';
+import { ConceptRelReq } from '../models/ConceptRelReq.model';
 
 @Injectable({ providedIn: 'root' })
 
@@ -18,6 +19,9 @@ export class ConceptService {
   private apiUrlUpdate = 'http://localhost:8084/api/catalog/updateCatalog'; 
   private apiUrlDelete = 'http://localhost:8084/api/catalog/deleteCatalog'; 
   private apiUrlRelMain = 'http://localhost:8084/api/relation/getListRelationMainCat'; 
+  private apiUrlCrudCR = 'http://localhost:8084/api/catalog/crudConceptRel'; 
+
+  private apiUrlUpload = 'http://localhost:8084/api/catalog/upload'; 
   
   constructor(private http: HttpClient) { }
 
@@ -39,6 +43,36 @@ export class ConceptService {
 
   searchRelationMain(relMainReq: RelMainReq): Observable<RelMainResponse[]> {
     return this.http.post<RelMainResponse[]>(this.apiUrlRelMain, relMainReq);
+  }
+
+  crudConceptRel(conceptRelReq: ConceptRelReq): Observable<ConceptRes> {
+    return this.http.post<ConceptRes>(this.apiUrlCrudCR, conceptRelReq);
+  }
+
+  upload(file: File, 
+        idConceptUp: number,
+        idApplication: number,
+        idCompany: number,
+        username: string,        
+        idConceptDown: number,
+        idRelation: number,        
+        indNivel: number,
+        operationType: number,
+        attUpload: number
+        ): Observable<ConceptModelRes> {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('idConceptUp', idConceptUp.toString());
+    formData.append('idApplication', idApplication.toString());
+    formData.append('idCompany', idCompany.toString());
+    formData.append('username', username);    
+    formData.append('idConceptDown', idConceptDown.toString());
+    formData.append('idRelation', idRelation.toString());
+    formData.append('indNivel', indNivel.toString());
+    formData.append('operationType', operationType.toString());
+    formData.append('attribute1', attUpload.toString());
+    
+    return this.http.post<ConceptModelRes>(this.apiUrlUpload, formData);
   }
   
 }
