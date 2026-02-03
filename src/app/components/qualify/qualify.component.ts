@@ -506,18 +506,14 @@ export class QualifyComponent implements OnInit {
     do{
       ini = this.listUmbral[i].numInitial;
       fin = this.listUmbral[i].numFinal;      
+      returnColor = this.listUmbral[i].indColor;      
       if(currentRisk > ini && currentRisk < fin){
         flagStop = true;
       }
       i++;
       //console.log("i: ",i);
     } while (flagStop == false && i < this.listUmbral.length);
-    
-    if(i == 1){
-      returnColor = 'red';
-    }else{
-      returnColor = 'green';
-    }
+        
     //console.log("returnColor: ",returnColor);
     return returnColor;
   }

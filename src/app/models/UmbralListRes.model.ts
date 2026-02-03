@@ -8,5 +8,6 @@ export interface UmbralListRes{
 	indProbabilty: string;
 	indImpact: string;
 	indEstatus: string;	
+	indColor: string;	
 
 }

@@ -89,7 +89,8 @@ export class ConceptsComponent implements OnInit {
       impactTxt: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]*$')]],
       probabilityTxt: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]*$')]],
       rangeIniTxt: ['', [Validators.required, Validators.pattern('[0-9]*')]],
-      rangeFinTxt: ['', [Validators.required, Validators.pattern('[0-9]*')]]
+      rangeFinTxt: ['', [Validators.required, Validators.pattern('[0-9]*')]],
+      colorTxt: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]*$')]]
     });
 
     this.umbralUpdForm = this.fb.group({
@@ -97,7 +98,8 @@ export class ConceptsComponent implements OnInit {
       probabilityUpdTxt: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]*$')]],
       rangeIniUpdTxt: ['', [Validators.required, Validators.pattern('[0-9]*')]],
       rangeFinUpdTxt: ['', [Validators.required, Validators.pattern('[0-9]*')]],
-      umbralUpdIdTxt: ['', [Validators.required, Validators.pattern('[0-9]*')]]
+      umbralUpdIdTxt: ['', [Validators.required, Validators.pattern('[0-9]*')]],
+      colorUpdTxt: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]*$')]]
     });
 
     this.sonFormN2 = this.fb.group({
@@ -190,7 +192,8 @@ export class ConceptsComponent implements OnInit {
     indProbability: '',
     indImpact: '',
     username: '',
-    operationType: 0
+    operationType: 0,
+    indColor: ''
   }
 
   relMainReq: RelMainReq = {
@@ -851,10 +854,10 @@ export class ConceptsComponent implements OnInit {
   }
 
   onSaveRelConceptN3(){
-    console.log("(Popup) Alta nivel 3: ");
-    console.log("(Popup) Concepto: ", this.sonFormN3.value.conceptN3Txt);
-    console.log("(Popup) Valor: ", this.sonFormN3.value.valueN3Txt); 
-    console.log("(Popup) idConceptUp: ", this.conceptTxtTitleIDN3); 
+    //console.log("(Popup) Alta nivel 3: ");
+    //console.log("(Popup) Concepto: ", this.sonFormN3.value.conceptN3Txt);
+    //console.log("(Popup) Valor: ", this.sonFormN3.value.valueN3Txt); 
+    //console.log("(Popup) idConceptUp: ", this.conceptTxtTitleIDN3); 
 
     this.conceptRelReq.idConceptUp = this.conceptTxtTitleIDN3;
     this.conceptRelReq.idApplication = 1;
@@ -1082,6 +1085,17 @@ onOpenUpdateConceptN2(item: any) {
           console.error('exception: ', this.error);
         }
       });
+    }else{
+      Swal.fire({
+        title: "<strong>Archivo No Procesado</u></strong>",
+        icon: "info",
+        html: `Debe seleccionar un archvio válido`,
+        showCloseButton: true,
+        showCancelButton: false,
+        focusConfirm: false,
+        confirmButtonText: `<i class="fa fa-thumbs-up"></i> Aceptar`,
+                
+      });
     }
 
   }
@@ -1121,6 +1135,17 @@ onOpenUpdateConceptN2(item: any) {
               });
           console.error('exception: ', this.error);
         }
+      });
+    }else{
+      Swal.fire({
+        title: "<strong>Archivo No Procesado</u></strong>",
+        icon: "info",
+        html: `Debe seleccionar un archvio válido`,
+        showCloseButton: true,
+        showCancelButton: false,
+        focusConfirm: false,
+        confirmButtonText: `<i class="fa fa-thumbs-up"></i> Aceptar`,
+                
       });
     }
 
@@ -1162,7 +1187,7 @@ onOpenUpdateConceptN2(item: any) {
   }
 
   onUploadN3() {
-    console.log('isChecked: ', this.isChecked);
+    //console.log('isChecked: ', this.isChecked);
     if(this.isChecked == true){
       this.attUpload = 1; 
     }
@@ -1201,6 +1226,17 @@ onOpenUpdateConceptN2(item: any) {
               });
           console.error('exception: ', this.error);
         }
+      });
+    }else{
+      Swal.fire({
+        title: "<strong>Archivo No Procesado</u></strong>",
+        icon: "info",
+        html: `Debe seleccionar un archvio válido`,
+        showCloseButton: true,
+        showCancelButton: false,
+        focusConfirm: false,
+        confirmButtonText: `<i class="fa fa-thumbs-up"></i> Aceptar`,
+                
       });
     }
 
@@ -1436,6 +1472,7 @@ onOpenUpdateConceptN2(item: any) {
     this.umbralReq.indImpact = this.umbralForm.value.impactTxt;
     this.umbralReq.username = 'jlbautistas';
     this.umbralReq.operationType = 1;
+    this.umbralReq.indColor = this.umbralForm.value.colorTxt;
     
     this.umbralService.crudUmbral(this.umbralReq).subscribe({
       next: (responseSave) => {     
@@ -1483,11 +1520,40 @@ onOpenUpdateConceptN2(item: any) {
     this.umbralReq.indImpact = this.umbralUpdForm.value.impactUpdTxt;
     this.umbralReq.username = 'jlbautistas';
     this.umbralReq.operationType = 2;
+    this.umbralReq.indColor = this.umbralUpdForm.value.colorUpdTxt;
     
     const updId = document.getElementById('umbralUpdIdTxt') as HTMLInputElement | null;
     if (updId !== null) {
       //console.log("(Update Umbral Action) ID(js): ", updId.value);   
       this.umbralReq.idUmbral = Number(updId.value);
+    }
+
+    const rangeIniUpd = document.getElementById('rangeIniUpdTxtHtml') as HTMLInputElement | null;
+    if (rangeIniUpd !== null) {
+      //console.log("(Update Umbral Action) rangeIniUpd(js): ", rangeIniUpd.value);   
+      this.umbralReq.numInitial = Number(rangeIniUpd.value);
+    }
+
+    const rangeFinUpd = document.getElementById('rangeFinUpdTxtHtml') as HTMLInputElement | null;
+    if (rangeFinUpd !== null) {
+      //console.log("(Update Umbral Action) rangeFinUpd(js): ", rangeFinUpd.value);   
+      this.umbralReq.numFinal = Number(rangeFinUpd.value);
+    }
+
+    const impactUpd = document.getElementById('impactUpdTxtHtml') as HTMLInputElement | null;
+    if (impactUpd !== null) {
+      //console.log("(Update Umbral Action) impactUpd(js): ", impactUpd.value);   
+      this.umbralReq.indImpact = impactUpd.value;
+    }
+    const probabilityUpd = document.getElementById('probabilityUpdTxtHtml') as HTMLInputElement | null;
+    if (probabilityUpd !== null) {
+      //console.log("(Update Umbral Action) probabilityUpd(js): ", probabilityUpd.value);   
+      this.umbralReq.indProbability = probabilityUpd.value;
+    }
+    const colorUpd = document.getElementById('idColorUpdTxt') as HTMLInputElement | null;
+    if (colorUpd !== null) {
+      //console.log("(Update Umbral Action) colorUpd(js): ", colorUpd.value);   
+      this.umbralReq.indColor = colorUpd.value;
     }
 
     this.umbralService.crudUmbral(this.umbralReq).subscribe({
@@ -1499,7 +1565,7 @@ onOpenUpdateConceptN2(item: any) {
               icon: "success",
               title: "Umbral",
               text: "Información almacenada satisfactoriamente",
-              footer: '<p> <strong>'+this.umbralUpdForm.value.impactTxt+'</strong> guardado con éxito</p>'
+              footer: '<p> guardado con éxito</p>'
             });
             this.onCloseUpdateUmbral();
             this.getInitialUmbral(1, 1);

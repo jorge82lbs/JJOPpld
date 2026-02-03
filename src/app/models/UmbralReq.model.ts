@@ -9,5 +9,6 @@ export interface UmbralReq{
     indImpact: string;
     username: string;
     operationType: number;
+    indColor: string;
 
 }

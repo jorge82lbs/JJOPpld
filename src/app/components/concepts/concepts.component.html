@@ -16,7 +16,13 @@
     </div>
   </div>
 </nav>
-
+<div class="container mt-4">
+    <div class="mt-4">
+      <div class="input-group mb-3">
+        <label class="titulo-principal">Configuración de Matriz de Riesgos</label>
+      </div>
+    </div>
+</div>
 <div class="container mt-4">
     <div class="mt-4">
       <div class="input-group mb-3">
@@ -34,12 +40,12 @@
 
 
 <!-- Tabla para mostrar Umbral  -->
-<div class="container mt-4" style="height: 220px;">  
+<div class="container mt-4">  
   <div class="mt-4">
-    <h4 class="subtitle">Umbral</h4>
-    <div class="table-container">
+    <label class="titulo-secundario">Umbral</label>
+    <div class="table-container" style="height: 170px;">
       <div class="scrollable-container">
-        <table  class="table table-hover table-bordered" >
+        <table  class="table table-hover table-bordered">
           <thead class="table-dark">
             <tr>
               <th class="text-center table-td">
@@ -81,7 +87,7 @@
 
 <div class="container mt-4">
     <div class="mt-4">
-      <h4 class="subtitle">Conceptos</h4>
+      <label class="titulo-secundario">Conceptos</label>
       <div class="input-group mb-3">
         <input type="file" class="form-control" (change)="onFileSelected($event)" accept=".xls,.xlsx,.XLS,.XLSX">
         <button class="btn btn-success" style="scale: .9" (click)="onUpload()">
@@ -93,7 +99,7 @@
 <!-- Tabla Principal Nivel 1  -->
 <div class="container mt-4">  
   <div class="mt-4">
-    <div class="table-container">
+    <div class="table-container" style="height: 300px;">
       <div class="scrollable-container">
         <table  matSort (matSortChange)="sortData($event)" class="table table-hover table-bordered" >
           <thead class="table-dark">
@@ -153,9 +159,9 @@
 <div class="modal modal-backdrop" tabindex="-1" id="modalUpdateConcept">
   <div class="modal-container">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header" style="text-align: center;">
-          <h4 style="text-align: center;" id="myModalUpdLabel">Ingrese Concepto a Editar</h4>
+      <div class="modal-content" style="width: 450px;">
+        <div style="text-align: center;">          
+          <label class="titulo-popup">Ingrese Concepto a Editar</label>
         </div>
         <form [formGroup]="validateUpdForm" (ngSubmit)="onUpdateConcept()">
         <div class="modal-body">
@@ -204,9 +210,9 @@
 <div class="modal modal-backdrop" tabindex="-1" id="modalSaveRelation">  
   <div class="modal-container">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header-new" style="text-align: center;">        
-          <h4 style="text-align: center;" id="myModalL">Ingrese Concepto a Relacionar</h4>
+      <div class="modal-content" style="width: 450px;">
+        <div style="text-align: center;">                  
+          <label class="titulo-popup">Ingrese Concepto a Relacionar</label>
         </div>    
         <form [formGroup]="sonForm" (ngSubmit)="onSaveRelConcept()">
           <div class="modal-body">            
@@ -247,7 +253,7 @@
   </div>
 </div>  
 
-
+<!-- Tabla Nivel 2 -->
 <div class="modal modal-backdrop" tabindex="-1" id="modalPopupN2">
   <div class="modal-container">
     <div class="modal-dialog">
@@ -257,7 +263,7 @@
             type="text"
             class="form-control"
             placeholder="Valor"
-            style="text-align: center"
+            style="text-align: center; font-weight: bold;"
             disabled
             id="valueId" value="{{ conceptTxtTitle }}"
           >          
@@ -338,13 +344,19 @@
 <div class="modal" tabindex="-1" id="modalUpdateConceptN2">
   <div class="modal-container">      
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header" style="text-align: center;">
-          <h4 style="text-align: center;" id="myModalUpdLabelN3">Ingrese Valor a Editar</h4>
-        </div>
+      <div class="modal-content" style="width: 800px;">
+        <div class="modal-footer">
+            <input
+            type="text"
+            class="form-control"
+            placeholder="Valor"
+            style="text-align: center"
+            disabled
+            id="valueIdssed" value="Valor a Editar"
+          >
+        </div>  
         <form [formGroup]="validateUpdFormN2" (ngSubmit)="onUpdateConceptN2()">
-        <div class="modal-body">
-          <p>&nbsp;</p>
+        <div class="modal-body">          
           <div class="input-group mb-3">
             <input
               type="text"
@@ -356,6 +368,7 @@
             >
           </div>
           <div class="input-group mb-3">
+            <p style="text-align: center;"> 
             <input
               type="number"
               class="form-control element-search"
@@ -364,6 +377,7 @@
               style="width: 100px;"
               formControlName="valorUpdN2Txt"
             >
+            </p>
           </div>
           <div class="modal-body">
             <input
@@ -437,20 +451,14 @@
   </div>
 </div>
 
-
+<!-- Table Nivel 3 -->
 <div class="modal modal-backdrop" tabindex="-1" id="modalPopupN3">
   <div class="modal-container">
     <div class="modal-dialog">
       <div class="modal-content" style="width: 700px;">
+                
         <div class="modal-header-new" style="text-align: center;">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Valor"
-            style="text-align: center"
-            disabled
-            id="valueIdN3" value="{{ conceptTxtTitleN3 }}"
-          >          
+          <label class="titulo-secundario">{{ conceptTxtTitleN3 }}</label>          
         </div>                              
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" (click)="onCloseSaveRelMainN3()" >Cerrar</button>
@@ -462,7 +470,7 @@
               <i class="bi bi-cloud-upload" style="scale: .9"></i>
             </button>
           </div>
-          <label>
+          <label class="titulo-card">
             Con Atributo!
             <input type="checkbox" [(ngModel)]="isChecked" name="myCheckbox">
           </label>
@@ -529,13 +537,12 @@
 <div class="modal" tabindex="-1" id="modalUpdateConceptN3">
   <div class="modal-container">      
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header" style="text-align: center;">
-          <h4 style="text-align: center;" id="myModalUpdLabelN3">Ingrese Valor a Editar</h4>
-        </div>
+      <div class="modal-content" style="width: 700px;">
+        <div style="text-align: center;">                  
+          <label class="titulo-popup">Editar Catálogo Fuente</label>
+        </div>    
         <form [formGroup]="validateUpdFormN3" (ngSubmit)="onUpdateConceptN3()">
         <div class="modal-body">
-          <p>&nbsp;</p>
           <div class="input-group mb-3">
             <input
               type="text"
@@ -577,20 +584,15 @@
   </div>
 </div>
 
+<!-- Popup Alta Nivel 3-->
 <div class="modal" tabindex="-1" id="modalSaveRelMainAltaN3">
   <div class="modal-container">
     <div class="modal-dialog">
       <div class="modal-content" style="width: 700px;">
-        <div class="modal-footer">
-            <input
-            type="text"
-            class="form-control"
-            placeholder="Valor"
-            style="text-align: center"
-            disabled
-            id="valueIdssN4" value="Agregar a Concepto"
-          >
-        </div>  
+        <div style="text-align: center;">                  
+          <label class="titulo-popup">Agregar Catálogo Fuente</label>
+        </div>    
+
         <form [formGroup]="sonFormN3" (ngSubmit)="onSaveRelConceptN3()">
         <div class="modal-body">
           <p>
@@ -632,9 +634,9 @@
 <div class="modal modal-backdrop" tabindex="-1" id="modalSaveUmbral">  
   <div class="modal-container">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header-new" style="text-align: center;">        
-          <h4 style="text-align: center;" id="myModalUm">Ingrese La Siguiente Información</h4>
+      <div class="modal-content" style="width: 450px;">
+        <div style="text-align: center;">                  
+          <label class="titulo-popup">Ingrese La Siguiente Información</label>
         </div>    
         <form [formGroup]="umbralForm" (ngSubmit)="onSaveUmbralAction()">
           <div class="modal-body">
@@ -683,7 +685,22 @@
                   formControlName="rangeFinTxt"
                 >
               </p> 
-            </div>   
+            </div> 
+            
+            <div class="input-group" style="text-align: center;">
+              <p style="text-align: center;"> 
+                <select #mySelect class="form-select" size="1" aria-label="Size 1 select example" formControlName="colorTxt"> 
+                  <option value="none">Seleccione Cliente</option>
+                  <option value="red">Rojo</option> 
+                  <option value="blue">Azul</option>
+                  <option value="green">Verde</option>
+                  <option value="yellow">Amarillo</option>
+                  <option value="gray">Gris</option>
+                  <option value="silver">Plata</option>
+                </select>              
+              </p> 
+            </div>
+
           </div>        
           <div class="modal-footer">            
             <button type="submit" class="btn btn-success">Guardar</button>
@@ -700,9 +717,9 @@
 <div class="modal modal-backdrop" tabindex="-1" id="modalUpdateUmbral">  
   <div class="modal-container">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header-new" style="text-align: center;">        
-          <h4 style="text-align: center;" id="myModalUm">Actualizar Umbral</h4>
+      <div class="modal-content" style="width: 450px;">
+        <div style="text-align: center;">        
+          <label class="titulo-popup">Actualizar Umbral</label>
         </div>    
         <form [formGroup]="umbralUpdForm" (ngSubmit)="onUpdateUmbralAction()">
           <div class="modal-body">
@@ -751,7 +768,23 @@
                   formControlName="rangeFinUpdTxt"
                 >
               </p> 
-            </div>   
+            </div> 
+
+            <div class="input-group" style="text-align: center;">
+              <p style="text-align: center;"> 
+                <select #mySelect class="form-select" size="1" aria-label="Size 1 select example" formControlName="colorUpdTxt" id="idColorUpdTxt"> 
+                  <option value="none">Seleccione Cliente</option>
+                  <option value="red">Rojo</option> 
+                  <option value="blue">Azul</option>
+                  <option value="green">Verde</option>
+                  <option value="yellow">Amarillo</option>
+                  <option value="gray">Gris</option>
+                  <option value="silver">Plata</option>
+                </select>              
+              </p> 
+            </div>
+
+
             <div class="modal-body">
               <input
                 type="hidden"

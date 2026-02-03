@@ -16,7 +16,13 @@
     </div>
   </div>
 </nav>
-
+<div class="container mt-4">
+    <div class="mt-4">
+      <div class="input-group mb-3">
+        <label class="titulo-principal">Obtención de Riesgos por Cliente</label>
+      </div>
+    </div>
+</div>
 <div class="container mt-4">
     <div class="mt-4">
       <div class="input-group mb-3">        
@@ -88,15 +94,8 @@
 <div class="container mt-4">  
   <div class="mt-4">         
     <div class="table-container">
-      <div class="modal-footer">            
-         <input
-            type="text"
-            class="form-control"
-            placeholder="Valor"
-            style="text-align: right; font-weight: bold;"
-            disabled
-            id="valueIddd" value="Matriz de Riesgos: {{ nomCatalogN2 }}"
-          >
+      <div class="modal-footer">                     
+        <label class="titulo-popup">{{ nomCatalogN2 }}</label>
       </div>
       <div class="scrollable-container">
         <table class="table table-hover table-bordered" >
@@ -124,12 +123,13 @@
   </div>
 </div>
 
+
 <div class="modal modal-backdrop" tabindex="-1" id="modalQty">  
   <div class="modal-container">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header-new" style="text-align: center;">        
-          <h4 style="text-align: center;" id="myModalQty">Calificar</h4>
+      <div class="modal-content" style="width: 700px;">
+        <div class="modal-header-new" style="text-align: center;">              
+          <label class="titulo-principal">Asignar Riesgo al Cliente</label>            
         </div>    
         <form [formGroup]="qtyForm" (ngSubmit)="onQtyAction()">
           <div class="modal-body">
@@ -147,7 +147,8 @@
               <select #myQtySelect class="form-select" size="1" aria-label="Size 1 select example" (change)="onSelectionChangeQty($event)" formControlName="idRelationQtyTxt"> 
                 <option value="0">Seleccione..</option>
                 <option value="{{ item.idRelation }}" *ngFor="let item of listRelMainNiv3">
-                  {{ item.nomCatalogRisk }} - {{ item.indValue }}
+                      {{ item.indValue }}&nbsp;&nbsp;||&nbsp;
+                      {{ item.nomCatalogRisk }}
                 </option>
               </select>
             </div>
