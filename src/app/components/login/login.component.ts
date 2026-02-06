@@ -50,6 +50,7 @@ export class LoginComponent {
       this.userModel.userModel=this.loginForm.value.username;
       this.userModel.passModel= this.loginForm.value.password;
 
+      localStorage.setItem('currentUser', JSON.stringify(this.loginForm.value.username));
 
       Swal.fire({
         title: "Validando Acceso!",

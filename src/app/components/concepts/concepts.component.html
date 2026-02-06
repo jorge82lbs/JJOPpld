@@ -1,6 +1,6 @@
 <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Bienvenido</a>
+    
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -10,7 +10,10 @@
         &nbsp;&nbsp;&nbsp;
         <button class="btn btn-outline-light" (click)="goQualify()">Qualify</button>
       </ul>
+
       <form class="d-flex" role="search">
+        <a class="navbar-brand" href="#">Bienvenido: </a>
+        <a class="navbar-brand" href="#">{{loggedUser}}</a>        
         <button class="btn btn-outline-success" (click)="onLogout()" type="submit">Salir</button>
       </form>
     </div>
@@ -45,36 +48,36 @@
     <label class="titulo-secundario">Umbral</label>
     <div class="table-container" style="height: 170px;">
       <div class="scrollable-container">
-        <table  class="table table-hover table-bordered">
+        <table matSort (matSortChange)="sortDataUmbral($event)" class="table table-hover table-bordered tabla-redondeada">
           <thead class="table-dark">
             <tr>
-              <th class="text-center table-td">
-                <button class="btn btn-success" style="scale: .8" data-toggle="modal" (click)="onOpenSaveUmbral()"><i class="bi bi-plus-circle">
+              <th class="text-center table-td th-cel-jjo" style="background-color: black;">
+                <button class="btn btn-success" style="scale: .7" data-toggle="modal" (click)="onOpenSaveUmbral()"><i class="bi bi-plus-circle">
                   </i>&nbsp;Nuevo
                 </button>
               </th>
-              <th class="text-center table-td">Impacto</th>
-              <th class="text-center table-td">Probabilidad</th>
-              <th class="text-center table-td">Rango Inicial</th>
-              <th class="text-center table-td">Rango Final</th>              
+              <th class="text-center table-td th-cel-jjo" style="background-color: black;">Impacto</th>
+              <th class="text-center table-td th-cel-jjo" style="background-color: black;">Probabilidad</th>
+              <th mat-sort-header="iniRange" class="text-center table-td th-cel-jjo" style="background-color: black;">&nbsp;&nbsp;Rango Inicial</th>
+              <th mat-sort-header="finRange" class="text-center table-td th-cel-jjo" style="background-color: black;">&nbsp;&nbsp;Rango Final</th>
             </tr>            
           </thead>
           <tbody>
             @for (item of listUmbral; track item) {
             <tr>                              
-              <td class="text-center table-td">
-                <button class="btn btn-primary" style="scale: .8" (click)="onOpenUpdateUmbral(item)">
-                  <i class="bi bi-pencil" style="scale: .8"></i>
+              <td class="text-center th-cel-jjo">
+                <button class="btn btn-primary" style="scale: .6" (click)="onOpenUpdateUmbral(item)">
+                  <i class="bi bi-pencil" style="scale: .6"></i>
                 </button>
                 &nbsp;
-                <button class="btn btn-danger" style="scale: .8" (click)="onOpenDeleteUmbral(item)">
-                  <i class="bi bi-trash" style="scale: .8"></i>
+                <button class="btn btn-danger" style="scale: .6" (click)="onOpenDeleteUmbral(item)">
+                  <i class="bi bi-trash" style="scale: .6"></i>
                 </button>
               </td>
-              <td class="text-center table-td">{{ item.indImpact }}</td>
-              <td class="text-center table-td">{{ item.indProbabilty }}</td>
-              <td class="text-center table-td">{{ item.numInitial }}</td>
-              <td class="text-center table-td">{{ item.numFinal }}</td>
+              <td class="text-center th-cel-jjo">{{ item.indImpact }}</td>
+              <td class="text-center th-cel-jjo">{{ item.indProbabilty }}</td>
+              <td class="text-center th-cel-jjo">{{ item.numInitial }}</td>
+              <td class="text-center th-cel-jjo">{{ item.numFinal }}</td>
               
             </tr>
             }
@@ -88,10 +91,10 @@
 <div class="container mt-4">
     <div class="mt-4">
       <label class="titulo-secundario">Conceptos</label>
-      <div class="input-group mb-3">
-        <input type="file" class="form-control" (change)="onFileSelected($event)" accept=".xls,.xlsx,.XLS,.XLSX">
-        <button class="btn btn-success" style="scale: .9" (click)="onUpload()">
-          <i class="bi bi-cloud-upload" style="scale: .9"></i>
+      <div class="input-group mb-3 th-cel-jjo">
+        <input type="file" class="form-control th-cel-jjo" (change)="onFileSelected($event)" accept=".xls,.xlsx,.XLS,.XLSX">
+        <button class="btn btn-success" style="scale: .8" (click)="onUpload()">
+          <i class="bi bi-cloud-upload" style="scale: .8"></i>
         </button>
       </div>
     </div>
@@ -101,51 +104,51 @@
   <div class="mt-4">
     <div class="table-container" style="height: 300px;">
       <div class="scrollable-container">
-        <table  matSort (matSortChange)="sortData($event)" class="table table-hover table-bordered" >
+        <table matSort (matSortChange)="sortData($event)" class="table table-hover table-bordered tabla-redondeada" >
           <thead class="table-dark">
-            <tr
+            <tr 
             >
-              <th class="text-center table-td">
-                <button class="btn btn-success" style="scale: .8" data-toggle="modal"
+              <th class="text-center table-td th-cel-jjo" style="background-color: black;">
+                <button class="btn btn-success" style="scale: .7" data-toggle="modal"
                   (click)="onOpenSaveConcept()"
                   ><i class="bi bi-plus-circle"></i>&nbsp;Nuevo</button>
               </th>                              
-              <th class="text-center">
+              <th class="text-center th-cel-jjo" style="background-color: black;">
                   <input
                     type="text"
-                    class="form-control"
+                    class="form-control th-cel-jjo"
                     placeholder="Concepto"
                     id="conRelAjaxId"
                     (keyup)="onSearchTableRel($event,6)"
                   >
               </th>
-              <th class="text-center table-td"></th>
-              <th class="text-center table-td"></th>
+              <th class="text-center table-td th-cel-jjo" style="background-color: black;"></th>
+              <th class="text-center table-td th-cel-jjo" style="background-color: black;"></th>
               
             </tr>
             <tr>                              
-              <th class="text-center table-td">Opciones</th>
-              <th class="text-center table-td">Catálogo Relacionado</th>
-              <th class="text-center table-td">Valor</th>
-              <th class="text-center table-td">SubCatálogos</th>                              
+              <td class="text-center table-td th-cel-jjo" style="background-color: black;">Opciones</td>
+              <td mat-sort-header="nomCatalog" class="text-center table-td th-cel-jjo" style="background-color: black;">&nbsp;&nbsp;Catálogo Relacionado</td>
+              <td class="text-center table-td th-cel-jjo" style="background-color: black;">Valor</td>
+              <td class="text-center table-td th-cel-jjob" style="background-color: black;">SubCatálogos</td>
               
             </tr>
           </thead>
           <tbody>
             @for (item of listRelMainResponse; track item) {
             <tr>                              
-              <td class="text-center table-td">
-                <button class="btn btn-primary" style="scale: .8" (click)="onOpenUpdateConcept(item)">
-                  <i class="bi bi-pencil" style="scale: .8"></i>
+              <td class="text-center table-td th-cel-jjo">
+                <button class="btn btn-primary" style="scale: .6" (click)="onOpenUpdateConcept(item)">
+                  <i class="bi bi-pencil" style="scale: .6"></i>
                 </button>
                 &nbsp;
-                <button class="btn btn-danger" style="scale: .8" (click)="onOpenDeleteConcept(item)">
-                  <i class="bi bi-trash" style="scale: .8"></i>
+                <button class="btn btn-danger" style="scale: .6" (click)="onOpenDeleteConcept(item)">
+                  <i class="bi bi-trash" style="scale: .6"></i>
                 </button>
               </td>
-              <td class="text-center table-td">{{ item.nomCatalogRisk }}</td>
-              <td class="text-center table-td">{{ item.indValue }}</td>                                            
-              <td class="text-center table-td"><button type="button" style="scale: .8" (click)="onOpenNivel2Popup(item)"><i class="bi bi-pencil-square" style="scale: .8"></i></button></td>
+              <td class="text-center table-td th-cel-jjo">{{ item.nomCatalogRisk }}</td>
+              <td class="text-center table-td th-cel-jjo">{{ item.indValue }}</td>                                            
+              <td class="text-center table-td th-cel-jjo"><button type="button" style="scale: .6" (click)="onOpenNivel2Popup(item)"><i class="bi bi-pencil-square" style="scale: .6"></i></button></td>
               
             </tr>
             }
@@ -274,8 +277,8 @@
         <div class="modal-footer">
           <div class="input-group mb-3">
             <input type="file" class="form-control" (change)="onFileSelectedN2($event)" accept=".xls,.xlsx,.XLS,.XLSX">
-            <button class="btn btn-success" style="scale: .9" (click)="onUploadN2()">
-              <i class="bi bi-cloud-upload" style="scale: .9"></i>
+            <button class="btn btn-success" style="scale: .8" (click)="onUploadN2()">
+              <i class="bi bi-cloud-upload" style="scale: .8"></i>
             </button>
           </div>
         </div>  
@@ -284,48 +287,47 @@
             <div class="mt-4">
               <div class="table-container">
                 <div class="scrollable-container">
-                  <table  matSort (matSortChange)="sortData($event)" class="table table-hover table-bordered" >
+                  <table  matSort (matSortChange)="sortDataN2($event)" class="table table-hover table-bordered tabla-redondeada" >
                     <thead class="table-dark">  
                       <tr>
-                        <th class="text-center table-td">
-                          <button class="btn btn-success" style="scale: .8" data-toggle="modal"
+                        <th class="text-center table-td th-cel-jjo" style="background-color: black;">
+                          <button class="btn btn-success" style="scale: .7" data-toggle="modal"
                             (click)="onOpenSaveConceptN2()"
                             ><i class="bi bi-plus-circle"></i>&nbsp;Nuevo</button>
                         </th>                              
-                        <th class="text-center">
+                        <th class="text-center th-cel-jjo" style="background-color: black;">
                             <input
                               type="text"
-                              class="form-control"
+                              class="form-control th-cel-jjo"
                               placeholder="Concepto"
                               id="conRelAjaxId"
                               (keyup)="onSearchTableRelN2($event,6)"
                             >
                         </th>
-                        <th class="text-center table-td"></th>                      
-                        <th class="text-center table-td"></th>                      
+                        <th class="text-center table-td th-cel-jjo" style="background-color: black;"></th>                      
+                        
                       </tr>
                       <tr>                              
-                        <th class="text-center table-td">Opciones</th>
-                        <th class="text-center">Nombre del Concepto</th>
-                        <th class="text-center table-td">Valor</th>
-                        <th class="text-center table-td">Fuentes</th>
+                        <td class="text-center table-td th-cel-jjo" style="background-color: black;">Opciones</td>
+                        <td mat-sort-header="nomCatalog" class="text-center th-cel-jjo" style="background-color: black;">&nbsp;&nbsp;Nombre del Concepto</td>                        
+                        <td class="text-center table-td th-cel-jjo" style="background-color: black;">Fuentes</td>
                       </tr>
                     </thead>
                     <tbody>
                       @for (item of listRelMainNiv2; track item) {
                       <tr>                              
-                        <td class="text-center">
-                          <button class="btn btn-primary" style="scale: .8" (click)="onOpenUpdateConceptN2(item)">
-                            <i class="bi bi-pencil" style="scale: .8"></i>
+                        <td class="text-center th-cel-jjo">
+                          <button class="btn btn-primary" style="scale: .7" (click)="onOpenUpdateConceptN2(item)">
+                            <i class="bi bi-pencil" style="scale: .7"></i>
                           </button>
                           &nbsp;
-                          <button class="btn btn-danger" style="scale: .8" (click)="onOpenDeleteConceptN2(item)">
-                            <i class="bi bi-trash" style="scale: .8"></i>
+                          <button class="btn btn-danger" style="scale: .7" (click)="onOpenDeleteConceptN2(item)">
+                            <i class="bi bi-trash" style="scale: .7"></i>
                           </button>
                         </td>
-                        <td class="text-center table-td">{{ item.nomCatalogRisk }}</td>
-                        <td class="text-center table-td">{{ item.indValue }}</td>
-                        <td class="text-center table-td"><button type="button" style="scale: .8" (click)="onOpenNivel3Popup(item)"><i class="bi bi-pencil-square" style="scale: .8"></i></button></td>
+                        <td class="text-center table-td th-cel-jjo">{{ item.nomCatalogRisk }}</td>
+                        
+                        <td class="text-center table-td th-cel-jjo"><button type="button" style="scale: .7" (click)="onOpenNivel3Popup(item)"><i class="bi bi-pencil-square" style="scale: .7"></i></button></td>
                       </tr>
                       }
                     </tbody>
@@ -370,7 +372,7 @@
           <div class="input-group mb-3">
             <p style="text-align: center;"> 
             <input
-              type="number"
+              type="hidden"
               class="form-control element-search"
               placeholder="Valor"
               id="valorUpdIdN2"
@@ -390,7 +392,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-success">Actualizar</button>
+          <button type="submit" class="btn btn-success" disabled>Actualizar</button>
           &nbsp;
           <button type="button" class="btn btn-danger" (click)="onCloseUpdateConceptN2()" >Cancel</button>
         </div>
@@ -430,8 +432,9 @@
           <div class="input-group" style="text-align: center;">
             <p style="text-align: center;"> 
               <input 
-                type="number" 
+                type="hidden" 
                 id="valorN2TxtHtml"
+                value="0"
                 class="form-control" 
                 placeholder="Valor" 
                 style="width: 100px;"
@@ -466,8 +469,8 @@
         <div class="modal-footer">
           <div class="input-group mb-3">
             <input type="file" class="form-control" (change)="onFileSelectedN3($event)" accept=".xls,.xlsx,.XLS,.XLSX">
-            <button class="btn btn-success" style="scale: .9" (click)="onUploadN3()">
-              <i class="bi bi-cloud-upload" style="scale: .9"></i>
+            <button class="btn btn-success" style="scale: .8" (click)="onUploadN3()">
+              <i class="bi bi-cloud-upload" style="scale: .8"></i>
             </button>
           </div>
           <label class="titulo-card">
@@ -480,45 +483,45 @@
             <div class="mt-4">
               <div class="table-container">
                 <div class="scrollable-container">
-                  <table  matSort (matSortChange)="sortData($event)" class="table table-hover table-bordered" >
+                  <table matSort (matSortChange)="sortDataN3($event)" class="table table-hover table-bordered tabla-redondeada" >
                     <thead class="table-dark">  
                       <tr>
-                        <th class="text-center table-td">
-                          <button class="btn btn-success" style="scale: .8" data-toggle="modal"
+                        <th class="text-center table-td th-cel-jjo" style="background-color: black;">
+                          <button class="btn btn-success" style="scale: .7" data-toggle="modal"
                             (click)="onOpenSaveConceptN3()"
                             ><i class="bi bi-plus-circle"></i>&nbsp;Nuevo</button>
                         </th>                              
-                        <th class="text-center">
+                        <th class="text-center th-cel-jjo" style="background-color: black;">
                             <input
                               type="text"
-                              class="form-control"
+                              class="form-control th-cel-jjo"
                               placeholder="Concepto"
                               id="conRelAjaxIdN4"
                               (keyup)="onSearchTableRelN3($event,6)"
                             >
                         </th>
-                        <th class="text-center table-td"></th>                      
+                        <th class="text-center table-td th-cel-jjo" style="background-color: black;"></th>                      
                       </tr>
                       <tr>                              
-                        <th class="text-center table-td">Opciones</th>
-                        <th class="text-center">Nombre del Concepto</th>
-                        <th class="text-center table-td">Valor</th>
+                        <td class="text-center table-td th-cel-jjo" style="background-color: black;">Opciones</td>
+                        <td mat-sort-header="nomCatalog" class="text-center th-cel-jjo" style="background-color: black;">&nbsp;&nbsp;Nombre del Concepto</td>
+                        <td class="text-center table-td th-cel-jjo" style="background-color: black;">Valor</td>
                       </tr>
                     </thead>
                     <tbody>
                       @for (item of listRelMainNiv3; track item) {
                       <tr>                              
-                        <td class="text-center">
-                          <button class="btn btn-primary" style="scale: .8" (click)="onOpenUpdateConceptN3(item)">
+                        <td class="text-center th-cel-jjo">
+                          <button class="btn btn-primary" style="scale: .7" (click)="onOpenUpdateConceptN3(item)">
                             <i class="bi bi-pencil" style="scale: .8"></i>
                           </button>
                           &nbsp;
-                          <button class="btn btn-danger" style="scale: .8" (click)="onOpenDeleteConceptN3(item)">
+                          <button class="btn btn-danger" style="scale: .7" (click)="onOpenDeleteConceptN3(item)">
                             <i class="bi bi-trash" style="scale: .8"></i>
                           </button>
                         </td>
-                        <td class="text-center table-td">{{ item.nomCatalogRisk }}</td>
-                        <td class="text-center table-td">{{ item.indValue }}</td>                        
+                        <td class="text-center table-td th-cel-jjo">{{ item.nomCatalogRisk }}</td>
+                        <td class="text-center table-td th-cel-jjo">{{ item.indValue }}</td>                        
                       </tr>
                       }
                     </tbody>

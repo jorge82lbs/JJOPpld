@@ -1,12 +1,28 @@
-<div class="container">
-<div class="login-container">
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="custom-form" method="post">
-    <h2>:: PPLD - Bienvenido ::</h2>
-    <table class="container">
-        <tbody>
-            <tr>
-                <th>
-                    
+<div class="container mt-4">
+    <div class="mt-4">        
+        <nav class="navbar titulo-card">
+            <div class="modal-content">
+                <div style="text-align: center;">        
+                <label class="titulo-principal">Gestión de Personas Físicas con Actividades Vulnerables</label>
+            </div>
+        </div>
+        </nav>
+    </div>
+</div>
+
+
+<div class="container mt-3">    
+    <div class="mt-4">        
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="custom-form" method="post">
+            <label class="titulo-popup" style="text-align: center;">:: PPLD - Bienvenido ::</label>
+            <hr class="separador">
+        <div class="input-group mb-3">            
+            
+            
+            <table class="container">
+            <tbody>
+                <tr>
+                    <th>                    
                         <input
                         type="text"
                         class="form-control" 
@@ -19,46 +35,40 @@
                             <div class="invalid-feedback">
                                 ¡El usuario es requerido!
                             </div>
+                        }                    
+                    </th>
+                    <th>&nbsp;</th>
+                </tr>
+                <tr>
+                    <th> 
+                        <input
+                        [type]="showPassword ? 'text' : 'password'" 
+                        class="form-control" 
+                        name="password"
+                        placeholder="Password"
+                        formControlName="password"
+                        [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+                        />
+                    </th>                
+                    <th class="text-center">                    
+                        <span class="toggle-password" (click)="togglePassword()">
+                        &nbsp;<i class="bi bi-eye{{ showPassword ? '-slash' : '' }}"></i>
+                        </span>
+                        @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+                        <div class="invalid-feedback">
+                            ¡La contraseña es requerida!
+                        </div>                    
                         }
-                    
-                </th>
-                <th>&nbsp;</th>
-            </tr>
-            <tr>
-                <th>      
-                    
-                    <input
-                    [type]="showPassword ? 'text' : 'password'" 
-                    class="form-control" 
-                    name="password"
-                    placeholder="Password"
-                    formControlName="password"
-                    [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
-                    />
-                    
-                </th>
-                
-                <th class="text-center">
-                    
-                    <span class="toggle-password" (click)="togglePassword()">
-                    &nbsp;<i class="bi bi-eye{{ showPassword ? '-slash' : '' }}"></i>
-                    </span>
-                    @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
-                    <div class="invalid-feedback">
-                        ¡La contraseña es requerida!
-                    </div>                    
-                    }     
-                    
-                </th>
-            </tr>
-            <tr>
-                <th>      
-                    <button type="submit" class="btn btn-login">Login</button>
-                </th>
-            </tr>
-        </tbody>
-    </table>
-
-  </form>
-</div>    
+                    </th>
+                </tr>
+                <tr>
+                    <th>      
+                        <button type="submit" class="btn btn-login">Login</button>
+                    </th>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+        </form>
+    </div>
 </div>

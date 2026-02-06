@@ -53,35 +53,35 @@
     </div>
 </div>
 <!-- Tabla Principal Nivel 1  -->
-<div class="container mt-4" style="height: 370px;">  
+<div class="container mt-4" style="height: 300px;">  
   <div class="mt-4">
     <div class="table-container">
       <div class="scrollable-container">
-        <table  class="table table-hover table-bordered" >
+        <table matSort (matSortChange)="sortDataUmbralCl($event)" class="table table-hover table-bordered tabla-redondeada" >
           <thead class="table-dark">            
             <tr>                                            
-              <th class="text-center table-td">Grupo de Riesgos</th>
-              <th class="text-center table-td">Porcentaje</th>
-              <th class="text-center table-td">Riesgo</th>              
-              <th class="text-center table-td">SubGrupo</th>
+              <th mat-sort-header="gpo" class="text-center table-td th-cel-jjo" style="background-color: black;">&nbsp;&nbsp;Grupo de Riesgos</th>
+              <th mat-sort-header="valor" class="text-center table-td th-cel-jjo" style="background-color: black;">&nbsp;&nbsp;Porcentaje</th>
+              <th mat-sort-header="calif" class="text-center table-td th-cel-jjo" style="background-color: black;">&nbsp;&nbsp;Riesgo</th>              
+              <th class="text-center table-td th-cel-jjo" style="background-color: black;">SubGrupo</th>
               
             </tr>
           </thead>
           <tbody>
             @for (item of listConceptNivel1; track item) {
             <tr>                              
-              <td class="text-center table-td">{{ item.nomCatalogRisk }}</td>
-              <td class="text-center table-td">{{ item.indValue }}</td>
-              <td class="text-center table-td">{{ item.catCalif }}</td>              
-              <td class="text-center table-td"><button type="button" style="scale: .8" (click)="onOpenNivel2Popup(item)"><i class="bi bi-filter-square" style="scale: .8"></i></button></td>
+              <td class="text-center table-td th-cel-jjo">{{ item.nomCatalogRisk }}</td>
+              <td class="text-center table-td th-cel-jjo">{{ item.indValue }}</td>
+              <td class="text-center table-td th-cel-jjo">{{ item.catCalif }}</td>              
+              <td class="text-center table-td th-cel-jjo"><button type="button" style="scale: .8" (click)="onOpenNivel2Popup(item)"><i class="bi bi-filter-square" style="scale: .8"></i></button></td>
               
             </tr>
-            }
-            <tr>                                            
-              <th class="text-center table-td"></th>
-              <th class="text-center table-td">{{ totalPorcent }}</th>
-              <th class="text-center table-td">{{ totalRisk }}</th>
-              <th class="text-center table-td"><p [style.color]="getColorClass()">{{ totalRiskDescription }}</p></th>              
+            } 
+            <tr class="th-cel-jjo">                                            
+              <td class="text-center table-td" style="padding: 0; background-color: black;"></td>
+              <td class="text-center table-td" style="padding: 0; background-color: black;"><label style="color: azure;">{{ totalPorcent }}</label></td>
+              <td class="text-center table-td" style="padding: 0; background-color: black;"><label style="color: azure;"> {{ totalRisk }}</label></td>
+              <td class="text-center table-td" style="padding: 0; background-color: black;"><p style="padding: 0; font-size: 1.3rem; margin-top: 10px;" [style.color]="getColorClass()">{{ totalRiskDescription }}</p></td>
             </tr>
           </tbody>
         </table>
@@ -98,22 +98,22 @@
         <label class="titulo-popup">{{ nomCatalogN2 }}</label>
       </div>
       <div class="scrollable-container">
-        <table class="table table-hover table-bordered" >
+        <table matSort (matSortChange)="sortDataN2Cl($event)" class="table table-hover table-bordered tabla-redondeada" >
           <thead class="table-dark">                        
             <tr>
-              <th class="text-center">Nombre del Concepto</th>
-              <th class="text-center table-td">Valor</th>
-              <th class="text-center table-td">Asignado</th>
-              <th class="text-center table-td">Fuentes</th>
+              <th mat-sort-header="nomCl" class="text-center th-cel-jjo" style="background-color: black;">&nbsp;&nbsp;Nombre del Concepto</th>
+              <th  mat-sort-header="valCl" class="text-center table-td th-cel-jjo" style="background-color: black;">&nbsp;&nbsp;Valor</th>
+              <th class="text-center table-td th-cel-jjo" style="background-color: black;">Asignado</th>
+              <th class="text-center table-td th-cel-jjo" style="background-color: black;">Fuentes</th>
             </tr>
           </thead>
           <tbody>
             @for (item of listRelMainNiv2; track item) {
             <tr>                                                      
-              <td class="text-center table-td">{{ item.nomConcept }}</td>
-              <td class="text-center table-td">{{ item.numQualified }}</td>
-              <td class="text-center table-td">{{ item.nomConceptDown }}</td>
-              <td class="text-center table-td"><button type="button" style="scale: .8" (click)="onOpenNivel3Popup(item)"><i class="bi bi-pencil-square" style="scale: .8"></i></button></td>
+              <td class="text-center table-td th-cel-jjo">{{ item.nomConcept }}</td>
+              <td class="text-center table-td th-cel-jjo">{{ item.numQualified }}</td>
+              <td class="text-center table-td th-cel-jjo">{{ item.nomConceptDown }}</td>
+              <td class="text-center table-td th-cel-jjo"><button type="button" style="scale: .7" (click)="onOpenNivel3Popup(item)"><i class="bi bi-pencil-square" style="scale: .7"></i></button></td>
             </tr>
             }
           </tbody>

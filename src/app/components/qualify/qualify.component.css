@@ -261,3 +261,28 @@ body {
     .celda:last-child {
         border-right: none;
     }
+
+  .th-cel-jjo {
+    padding: 0;
+    vertical-align: middle;    
+  }
+  
+  .th-cel-jjoblack {
+      background-color: black;
+      padding: 0;
+      vertical-align: middle;    
+  }
+
+  .tabla-redondeada {
+      border-collapse: separate; /* O 'collapse' con un contenedor */
+      border-spacing: 0;
+      border: 1px solid #ccc; /* Color del borde */
+      border-radius: 10px;    /* Radio de las esquinas */
+      overflow: hidden;       /* Mantiene el contenido dentro de las curvas */
+  }
+
+  /* Opcional: redondear bordes de los encabezados (th) si tienen fondo */
+  .tabla-redondeada th:first-child { border-top-left-radius: 10px; }
+  .tabla-redondeada th:last-child { border-top-right-radius: 10px; }
+  .tabla-redondeada tr:last-child td:first-child { border-bottom-left-radius: 10px; }
+  .tabla-redondeada tr:last-child td:last-child { border-bottom-right-radius: 10px; }

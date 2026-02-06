@@ -112,7 +112,7 @@ export class ConceptsComponent implements OnInit {
       conceptN3Txt: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]*$')]]
     });
 
-    this.sortedData = this.listConcepts.slice();    
+    this.sortedData = this.listRelMainResponse.slice();    
 
   }    
 
@@ -125,15 +125,17 @@ export class ConceptsComponent implements OnInit {
   };
 
   listConcepts: ConceptModelRes[] = [];
-  sortedData: ConceptModelRes[] = [];
+  
   listConceptsOriginal: ConceptModelRes[] = [];
   listRelMainResponse: RelMainResponse[] = [];
+  sortedData: RelMainResponse[] = [];
   listRelMainNiv2: RelMainResponse[] = [];
   listRelMainNiv2Org: RelMainResponse[] = [];
   listRelMainNiv3: RelMainResponse[] = [];
   listRelMainNiv3Org: RelMainResponse[] = [];
   listUmbral: UmbralListRes[] = [];
   listUmbralOriginal: UmbralListRes[] = [];
+  sortedDataUmbral: UmbralListRes[] = [];
 
   relMainFilterN2: RelMainResponse[] = [];
   relMainFilterN3: RelMainResponse[] = [];
@@ -242,8 +244,14 @@ export class ConceptsComponent implements OnInit {
     codeDescription: ''
   }
   
+  loggedUser: string = '';
   ngOnInit() {
-    // this.refreshApiTable();    
+    // this.refreshApiTable();  
+    
+    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    console.log("usuario firmado: ", user);
+    this.loggedUser = user;
+    
     this.getInitialConcept(1, 1, 0, 0,'Soluciones Legales Integrales')
     this.getInitialRelation(1, 1, 1, 1, 1);
     this.getInitialUmbral(1, 1);
@@ -532,7 +540,7 @@ export class ConceptsComponent implements OnInit {
 
   sortData(sort: Sort) {
     
-    const data = this.listConcepts.slice();
+    const data = this.listRelMainResponse.slice();
     if (!sort.active || sort.direction === '') {
       this.sortedData = data;
       return;
@@ -548,24 +556,74 @@ export class ConceptsComponent implements OnInit {
       }
     });
 
-    this.listConcepts = this.sortedData;
+    this.listRelMainResponse = this.sortedData;
   }
 
-  onSearchTable(event: Event, typeCol: number){
-    const searchValue = (event.target as HTMLInputElement).value;
-    this.listConcepts = this.listConceptsOriginal;
-    const data = this.listConcepts.slice();
+  sortDataN2(sort: Sort) {
     
-    switch (typeCol) {        
-        case 6:          
-          this.sortedData = data.filter(v => v.nomCatalogRisk.toUpperCase().indexOf(searchValue.toUpperCase()) !== -1);
-          this.listConcepts = this.sortedData;
-          return;
+    const data = this.listRelMainNiv2.slice();
+    if (!sort.active || sort.direction === '') {
+      this.sortedData = data;
+      return;
+    }
+
+    this.sortedData = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'nomCatalog':
+          return this.compare(a.nomCatalogRisk, b.nomCatalogRisk, isAsc);
         default:
           return 0;
-      }        
+      }
+    });
+
+    this.listRelMainNiv2 = this.sortedData;
   }
 
+  sortDataN3(sort: Sort) {
+    
+    const data = this.listRelMainNiv3.slice();
+    if (!sort.active || sort.direction === '') {
+      this.sortedData = data;
+      return;
+    }
+
+    this.sortedData = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'nomCatalog':
+          return this.compare(a.nomCatalogRisk, b.nomCatalogRisk, isAsc);
+        default:
+          return 0;
+      }
+    });
+
+    this.listRelMainNiv3 = this.sortedData;
+  }
+
+  sortDataUmbral(sort: Sort) {
+    
+    const data = this.listUmbral.slice();
+    if (!sort.active || sort.direction === '') {
+      this.sortedDataUmbral = data;
+      return;
+    }
+
+    this.sortedDataUmbral = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'iniRange':
+          return this.compare(a.numInitial, b.numInitial, isAsc);
+        case 'finRange':
+          return this.compare(a.numFinal, b.numFinal, isAsc);
+        default:
+          return 0;
+      }
+    });
+
+    this.listUmbral = this.sortedDataUmbral;
+  }
+  
   onClosePopupN2() {
     const modal = document.getElementById('modalPopupN2');
     if(modal != null){
@@ -811,7 +869,7 @@ export class ConceptsComponent implements OnInit {
     this.conceptRelReq.nomCatalog = this.sonFormN2.value.conceptN2Txt;
     this.conceptRelReq.idConceptDown = 0;
     this.conceptRelReq.idRelation = 0;
-    this.conceptRelReq.indValue = this.sonFormN2.value.valueN2Txt;
+    this.conceptRelReq.indValue = 0; // this.sonFormN2.value.valueN2Txt;
     this.conceptRelReq.indNivel = 2;
     this.conceptRelReq.operationType = 1;
     
@@ -984,7 +1042,7 @@ onOpenUpdateConceptN2(item: any) {
     this.conceptRelReq.username = 'jlbautistas';
     this.conceptRelReq.nomCatalog = "";
     this.conceptRelReq.idConceptDown = 0;    
-    this.conceptRelReq.indValue = this.validateUpdFormN2.value.valorUpdN2Txt;
+    this.conceptRelReq.indValue = 0; // this.validateUpdFormN2.value.valorUpdN2Txt;
     this.conceptRelReq.indNivel = 2;
     this.conceptRelReq.operationType = 3;
     
@@ -1681,5 +1739,7 @@ onOpenUpdateUmbral(item: any) {
     });	
     
   }
+
+  
 
 }

@@ -65,6 +65,7 @@ import {OverlayModule} from '@angular/cdk/overlay';
     ComboboxPopupContainer,
     Listbox,
     Option,
+    MatSortModule,
     OverlayModule
   ],
   templateUrl: './qualify.component.html',
@@ -117,7 +118,9 @@ export class QualifyComponent implements OnInit {
   qtyForm: FormGroup;
 
   listConceptNivel1: QualifyListMainRes[] = [];
+  sortedData: QualifyListMainRes[] = [];
   listRelMainNiv2: QualifyListRes[] = [];
+  sortedDataN2: QualifyListRes[] = [];
   listUmbral: UmbralListRes[] = [];
   listUmbralOriginal: UmbralListRes[] = [];
 
@@ -373,6 +376,13 @@ export class QualifyComponent implements OnInit {
     next: (response) => {
       this.listRelMainNiv3 = response;      
       //console.log("Lista concept N4: ", this.listRelMainNiv3);    
+      if(item.nomConcept == 'MUNICIPIO DE RESIDENCIA'){
+        this.listRelMainNiv3.sort((a, b) => a.nomCatalogRisk.localeCompare(b.nomCatalogRisk));  
+      }else{
+        this.listRelMainNiv3.sort((a, b) => a.indValue - b.indValue);  
+      }
+      
+
     },
       error: () => {
         this.error = true;
@@ -534,6 +544,59 @@ export class QualifyComponent implements OnInit {
         this.error = true;
       }
     });	  
+  }
+
+compare(a: number | string, b: number | string, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
+
+  sortDataUmbralCl(sort: Sort) {
+    
+    const data = this.listConceptNivel1.slice();
+    if (!sort.active || sort.direction === '') {
+      this.sortedData = data;
+      return;
+    }
+
+    this.sortedData = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'gpo':
+          return this.compare(a.nomCatalogRisk, b.nomCatalogRisk, isAsc);
+        case 'valor':
+          return this.compare(a.indValue, b.indValue, isAsc);
+        case 'calif':
+          return this.compare(a.catCalif, b.catCalif, isAsc);
+        default:
+          return 0;
+      }
+    });
+
+    this.listConceptNivel1 = this.sortedData;
+  }
+
+  sortDataN2Cl(sort: Sort) {
+    
+    const data = this.listRelMainNiv2.slice();
+    if (!sort.active || sort.direction === '') {
+      this.sortedDataN2 = data;
+      return;
+    }
+
+    this.sortedDataN2 = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'nomCl':
+          return this.compare(a.nomConcept, b.nomConcept, isAsc);
+        case 'valCl':
+          return this.compare(a.numQualified, b.numQualified, isAsc);
+        default:
+          return 0;
+      }
+    });
+
+    this.listRelMainNiv2 = this.sortedDataN2;
+    
   }
 
 }
