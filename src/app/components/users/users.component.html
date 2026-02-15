@@ -111,112 +111,83 @@
 <div class="modal modal-backdrop" tabindex="-1" id="modalSave">  
   <div class="modal-container">
     <div class="modal-dialog">
-      <div class="modal-content" style="width: 180%; height: 680px;">
+      <div class="modal-content" style="width: 180%; height: 530px;">
         <div style="text-align: center;">                  
           <label class="titulo-popup">Ingrese La Información </label>
         </div>    
         <form [formGroup]="saveForm" (ngSubmit)="onSaveAction()">
-          <div class="modal-body">              
-            <div class="table-container" style="height: 500px; width: 180%;">
-            <div class="scrollable-container">
-            <table style="width: 800px;">              
-              <tr>                
-                <td colspan="4">
-                  <input 
-                    type="text" 
-                    class="form-control"
-                    id="htmlName"
-                    placeholder="Nombre(s)"
-                    formControlName="htmlName"
-                  >
-                </td>
-                <td colspan="2" >
-                </td>        
-              </tr>
-              <tr>                
-                <td colspan="6">
-                  <input 
-                    type="text" 
-                    class="form-control"
-                    id="htmlFirstName"
-                    placeholder="Apellido Paterno"
-                    formControlName="htmlFirstName"
-                  >
-                </td>
-              </tr>              
-              <tr>
-                <td colspan="4">
-                  <input 
-                    type="text" 
-                    class="form-control"
-                    id="htmlSecondName"
-                    placeholder="Apellido Materno"
-                    formControlName="htmlSecondName"
-                  >
-                </td>
-                <td colspan="2"></td>
-              </tr>  
-              <tr>                
-                <td colspan="6">
-                  <input 
-                    type="text" 
-                    class="form-control"
-                    id="htmlUserName"
-                    placeholder="Username"
-                    formControlName="htmlUserName"
-                  >
-                </td>
-              </tr>                          
-              <tr>                
-                <td colspan="6">
-                  <input 
-                    type="text" 
-                    class="form-control"
-                    id="htmlDesc"
-                    placeholder="Descripción"
-                    formControlName="htmlDesc"
-                  >
-                </td>
-              </tr>  
-              <tr>                
-                <td colspan="6">
-                  <input 
-                    type="text" 
-                    class="form-control"
-                    id="htmlEmail"
-                    placeholder="Correo Electrónico"
-                    formControlName="htmlEmail"
-                  >
-                </td>
-              </tr>  
-              <tr>                
-                <td colspan="6">
-                  <input 
-                    type="text" 
-                    class="form-control"
-                    id="htmlRfc"
-                    placeholder="RFC"
-                    formControlName="htmlRfc"
-                  >
-                </td>
-              </tr>  
-              
-              <tr>                
-                <td colspan="6">
-                  <p style="text-align: center;"> 
-                    <select #mySelect class="form-select" size="1" aria-label="Size 1 select example" formControlName="htmlRol"> 
-                      <option value="none">Seleccione un Rol</option>
-                      <option value="red">Administrador</option> 
-                      <option value="blue">Usuario</option>
-                    </select>              
-                  </p> 
-                </td>
-              </tr>  
-
-
-            </table>
+          <div class="modal-body" style="padding: 0%;">
+            <div class="element-tablet">&nbsp;</div>
+            <div class="element-tablet">
+              <input 
+                type="text" 
+                class="form-control"
+                id="htmlName"
+                placeholder="Nombre(s)"
+                formControlName="htmlName"
+              >
             </div>
+            <div class="element-tablet">
+              <input 
+                type="text" 
+                class="form-control"
+                id="htmlFirstName"
+                placeholder="Apellido Paterno"
+                formControlName="htmlFirstName"
+              >
             </div>
+            <div class="element-tablet">
+              <input 
+                type="text" 
+                class="form-control"
+                id="htmlSecondName"
+                placeholder="Apellido Materno"
+                formControlName="htmlSecondName"
+              >
+            </div>
+            <div class="element-tablet">
+              <input 
+                type="text" 
+                class="form-control"
+                id="htmlUserName"
+                placeholder="Username"
+                formControlName="htmlUserName"
+              >
+            </div>
+            <div class="element-tablet">
+              <input 
+                type="text" 
+                class="form-control"
+                id="htmlDesc"
+                placeholder="Descripción"
+                formControlName="htmlDesc"
+              >
+            </div>
+            <div class="element-tablet">
+              <input 
+                type="text" 
+                class="form-control"
+                id="htmlEmail"
+                placeholder="Correo Electrónico"
+                formControlName="htmlEmail"
+              >
+            </div>
+            <div class="element-tablet">
+              <input 
+                type="text" 
+                class="form-control"
+                id="htmlRfc"
+                placeholder="RFC"
+                formControlName="htmlRfc"
+              >
+            </div>            
+            <p style="text-align: center;"> 
+              <select #mySelect class="form-select" size="1" aria-label="Size 1 select example" formControlName="htmlRol"> 
+                <option value="none">Seleccione un Rol</option>
+                <option value="red">Administrador</option> 
+                <option value="blue">Usuario</option>
+              </select>              
+            </p> 
           </div>        
           <div class="modal-footer">            
             <button type="submit" class="btn btn-success">Guardar</button>

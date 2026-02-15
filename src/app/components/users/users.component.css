@@ -266,3 +266,8 @@ body {
 .tabla-redondeada th:last-child { border-top-right-radius: 10px; }
 .tabla-redondeada tr:last-child td:first-child { border-bottom-left-radius: 10px; }
 .tabla-redondeada tr:last-child td:last-child { border-bottom-right-radius: 10px; }
+
+.element-tablet {
+  padding: 0.9px;
+  margin-bottom: 0.9px;
+}
