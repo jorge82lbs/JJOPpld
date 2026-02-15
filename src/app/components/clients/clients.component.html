@@ -1,0 +1,984 @@
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+  <div class="container-fluid">
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <button class="btn btn-outline-light" (click)="onLogout()">Home</button>
+        &nbsp;&nbsp;&nbsp;
+        <button class="btn btn-outline-light" (click)="goQualify()">Qualify</button>
+        &nbsp;&nbsp;&nbsp;
+        <button class="btn btn-outline-light" (click)="goConcepts()">Conceptos</button>
+      </ul>
+
+      <form class="d-flex" role="search">
+        <a class="navbar-brand" href="#">Bienvenido: </a>
+        <a class="navbar-brand" href="#">{{loggedUser}}</a>        
+        <button class="btn btn-outline-success" (click)="onLogout()" type="submit">Salir</button>
+      </form>
+    </div>
+  </div>
+</nav>
+<div class="container mt-4">
+    <div class="mt-4">
+      <div class="input-group mb-3">
+        <label class="titulo-principal">Administración de Clientes</label>
+      </div>
+    </div>
+</div>
+<div class="container mt-4">
+    <div class="mt-4">
+      <div class="input-group mb-3">
+         <input
+            type="text"
+            class="form-control"
+            placeholder="Valor"
+            style="text-align: center; font-weight: bold;"
+            disabled
+            id="valueId" value="{{ conceptTxtMain }}"
+          >
+      </div>
+    </div>
+</div>
+<div class="container mt-4">
+    <div class="mt-4">
+      <label class="titulo-secundario">Clientes</label>
+    </div>
+</div>
+
+<!-- Tabla Principal  -->
+<div class="container mt-4">  
+  <div class="mt-4">
+    <div class="table-container" style="height: 300px;">
+      <div class="scrollable-container">
+        <table matSort (matSortChange)="sortData($event)" class="table table-hover table-bordered tabla-redondeada" >
+          <thead class="table-dark">
+            <tr 
+            >
+              <th class="text-center table-td th-cel-jjo" style="background-color: black;">
+                <button class="btn btn-success" style="scale: .7" data-toggle="modal"
+                  (click)="onOpenSaveClient()"
+                  ><i class="bi bi-plus-circle"></i>&nbsp;Nuevo</button>
+              </th>                              
+              <th class="text-center th-cel-jjo" style="background-color: black;">
+                  <input
+                    type="text"
+                    class="form-control th-cel-jjo"
+                    placeholder="Concepto"
+                    id="conRelAjaxId"
+                    (keyup)="onSearchTable($event,6)"
+                  >
+              </th>
+              <th class="text-center table-td th-cel-jjo" style="background-color: black;"></th>
+              <th class="text-center table-td th-cel-jjo" style="background-color: black;"></th>
+            </tr>
+            <tr>                              
+              <td class="text-center table-td th-cel-jjo" style="background-color: black;">Opciones</td>
+              <td mat-sort-header="nomCatalog" class="text-center table-td th-cel-jjo" style="background-color: black;">&nbsp;&nbsp;RFC</td>
+              <td class="text-center table-td th-cel-jjo" style="background-color: black;">Cliente</td>
+              <td class="text-center table-td th-cel-jjo" style="background-color: black;">Detalles</td>
+            </tr>
+          </thead>
+          <tbody>            
+             @for (item of listClients; track item) {
+            <tr>                              
+              <td class="text-center table-td th-cel-jjo">
+                <button class="btn btn-primary" style="scale: .6" (click)="onOpenUpdateClient(item)">
+                  <i class="bi bi-pencil" style="scale: .6"></i>
+                </button>
+                &nbsp;
+                <button class="btn btn-danger" style="scale: .6" (click)="onOpenDeleteClient(item)">
+                  <i class="bi bi-trash" style="scale: .6"></i>
+                </button>
+              </td>
+              <td class="text-center table-td th-cel-jjo">{{ item.indRfc }}</td>
+              <td class="text-center table-td th-cel-jjo">{{ item.indFirstName }}&nbsp;{{ item.indSecondName }}&nbsp;{{ item.indNames }}</td>
+              <td class="text-center table-td th-cel-jjo"><button type="button" style="scale: .6" (click)="onOpenClientPopup(item)"><i class="bi bi-pencil-square" style="scale: .6"></i></button></td>
+              
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>      
+    </div>
+  </div>
+</div>
+
+<!-- Popup ALTA -->
+<div class="modal modal-backdrop" tabindex="-1" id="modalSaveClient">  
+  <div class="modal-container">
+    <div class="modal-dialog">
+      <div class="modal-content" style="width: 180%; height: 680px;">
+        <div style="text-align: center;">                  
+          <label class="titulo-popup">Ingrese La Información del Cliente</label>
+        </div>    
+        <form [formGroup]="clientForm" (ngSubmit)="onSaveClientAction()">
+          <div class="modal-body">              
+            <div class="table-container" style="height: 500px; width: 180%;">
+            <div class="scrollable-container">
+            <table style="width: 800px;">
+              <tr>
+                <td colspan="5" ></td>
+                <td style="text-align: right;">
+                  <input 
+                    type="date" 
+                    class="titulo-popup"
+                     style="font-size: small; text-align: end; border: none;"
+                    data-date-format="YYYYMMDD"
+                    value="{{ todayDate | date:'yyyy-MM-dd'}}"
+                    id="htmlDocDate"
+                    placeholder="Fecha Actual"
+                    formControlName="htmlDocDate"
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" >
+                  <input 
+                    type="text" 
+                    class="form-control"
+                    id="htmlRfc"
+                    placeholder="RFC"
+                    formControlName="htmlRfc"
+                  >
+                </td>      
+                <td ></td>        
+                <td colspan="3">
+                  <input 
+                    type="text" 
+                    class="form-control"
+                    id="htmlCurp"
+                    placeholder="CURP"
+                    formControlName="htmlCurp"
+                  >
+                </td>                
+              </tr>
+              <tr>                
+                <td colspan="2">
+                  <input 
+                    type="text" 
+                    class="form-control"
+                    id="htmlNames"
+                    placeholder="Nombre(s)"
+                    formControlName="htmlNames"
+                    
+                >
+                </td>              
+                <td colspan="2">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlFirName"
+                    placeholder="Apellido Paterno"
+                    formControlName="htmlFirName"                    
+                >
+                </td>
+                <td colspan="2">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlSecName"
+                    placeholder="Apellido Materno"
+                    formControlName="htmlSecName"
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td><label  class="form-control" style="border: none; text-align: right; font-size: small;">País de Nacionalidad</label>
+                <td colspan="2">
+                  <select id="htmlNatty" class="form-control" style="background-color: cornsilk;" formControlName="htmlNatty">
+                    <option selected value="México">México</option>
+                    @for (pais of listAllCountries; track pais.countryCode) {
+                      <option [value]="pais.countryCode">{{ pais.countryName }}</option>
+                    }
+                  </select>
+                </td>
+                <td><label  class="form-control" style="border: none; text-align: right; font-size: small;">País de Nacimiento</label>
+                </td>
+                <td colspan="2">
+                  <select id="htmlCouBir" class="form-control" style="background-color: cornsilk;" formControlName="htmlCouBir">
+                    <option selected value="México">México</option>
+                    @for (pais of listAllCountries; track pais.countryCode) {
+                      <option [value]="pais.countryCode">{{ pais.countryName }}</option>
+                    }
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input 
+                    type="date" 
+                    class="form-control"                  
+                    id="htmlBirDate"
+                    data-date-format="YYYYMMDD"
+                    placeholder="Fecha de Nacimiento"
+                    formControlName="htmlBirDate"
+                  >
+                </td>                                
+                <td colspan="5">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlEcoAct"
+                    placeholder="Actividad Económica, Ocupación, Profesión o Giro"
+                    formControlName="htmlEcoAct"
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlAddStrt"
+                    placeholder="Calle/Avenida/Vía"
+                    formControlName="htmlAddStrt"
+                  >
+                </td>
+                <td colspan="3">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlAddNum"
+                    placeholder="No.exterior / interior"
+                    formControlName="htmlAddNum"
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlAddSubb"
+                    placeholder="Colonia/Urbanización"
+                    formControlName="htmlAddSubb"
+                  >
+                </td>
+                <td colspan="3">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlAddCp"
+                    placeholder="Código Postal"
+                    formControlName="htmlAddCp"
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlAddCity"
+                    placeholder="Ciudad o Población"
+                    formControlName="htmlAddCity"
+                  >
+                </td>
+                <td colspan="2">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlAddTown"
+                    placeholder="Alcaldía o Municipio"
+                    formControlName="htmlAddTown"
+                  >
+                </td>
+                <td colspan="2">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlAddState"
+                    placeholder="Entidad Federativa"
+                    formControlName="htmlAddState"
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlPhoneSmt"
+                    placeholder="Celular"
+                    formControlName="htmlPhoneSmt"
+                  >
+                </td>
+                <td><label class="form-control" style="text-align: right;">País:</label></td>
+                <td colspan="3">
+                  <select id="htmlCountry" class="form-control" style="background-color: cornsilk;" formControlName="htmlCountry">
+                    <option selected value="México">México</option>
+                    @for (pais of listAllCountries; track pais.countryCode) {
+                      <option [value]="pais.countryCode">{{ pais.countryName }}</option>
+                    }
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlPhoneNum"
+                    placeholder="Número (s ) de teléfono con clave"
+                    formControlName="htmlPhoneNum"
+                  >                
+                </td>
+                <td>
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlPhoneExt"
+                    placeholder="Extensión"
+                    formControlName="htmlPhoneExt"
+                  >
+                </td>
+                <td colspan="2">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlEmail"
+                    placeholder="Correo Electrónico"
+                    formControlName="htmlEmail"
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlIdName"
+                    placeholder="Nombre de la Identificación"
+                    formControlName="htmlIdName"
+                  >
+                </td>
+                <td colspan="2">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlIdAut"
+                    placeholder="Autoridad que emite la Identificación"
+                    formControlName="htmlIdAut"
+                  >
+                </td>
+                <td colspan="2">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlIdOf"
+                    placeholder="Número de la Identificación"
+                    formControlName="htmlIdOf"
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td colspan="6" style="background-color: silver;">
+                  <label class="subtitulo-lateral" style="font-size: small;">En caso de persona física haya señalado un domicilio de residencia en el extranjero y cuenten con domicilio en territorio nacional</label>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="6" style="background-color: silver;">
+                  <label class="subtitulo-lateral" style="font-size: small;">debera llenar la siguiente sección.</label>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="5">
+                  <label  class="form-control" style="border: none; text-align: right; font-size: small;">El Domicilio de Residencia es en el Extranjero</label>
+                </td>
+                <td>
+                  <select #mySelect class="form-select" size="1" aria-label="Size 1 select example" id="htmlForeign" 
+                          class="form-control" style="background-color: cornsilk; font-size: small;"
+                          formControlName="htmlForeign"
+                          >
+                  <option value="NO">NO</option> 
+                  <option value="SI">SI</option>
+                  </select>     
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <input 
+                    type="text" 
+                    class="form-control"
+                    id="htmlFstreet"
+                    placeholder="Nombre de la Calle"
+                    formControlName="htmlFstreet"
+                  >
+                </td>      
+                <td>
+                  <input 
+                    type="text" 
+                    class="form-control"
+                    id="htmlFnumber"
+                    placeholder="Número Int/Ext"
+                    formControlName="htmlFnumber"
+                  >
+                </td>      
+                <td>
+                  <input 
+                    type="text" 
+                    class="form-control"
+                    id="htmlFsuburb"
+                    placeholder="Colonia o Demarcación Territorial"
+                    formControlName="htmlFsuburb"
+                  >
+                </td>      
+                <td>
+                  <input 
+                    type="text" 
+                    class="form-control"
+                    id="htmlFcity"
+                    placeholder="Ciudad o Entidad"
+                    formControlName="htmlFcity"
+                  >
+                </td>
+                <td>
+                  <input 
+                    type="text" 
+                    class="form-control"
+                    id="htmlFcp"
+                    placeholder="C.P."
+                    formControlName="htmlFcp"
+                  >
+                </td>
+                <td>
+                  <input 
+                    type="text" 
+                    class="form-control"
+                    id="htmlFcoun"
+                    placeholder="País"
+                    formControlName="htmlFcoun"
+                  >
+                </td>
+              </tr>
+
+              <tr>
+                <td colspan="6" style="background-color: silver;">
+                  <label class="subtitulo-lateral" style="font-size: small;">Constancia de Beneficiario controlador y otras manifestaciones del Cliente  (campos obligatorios por requisitar)</label>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="5">
+                  <label  class="form-control" style="border: none; text-align: right; font-size: small;">Tiene Conocimiento de la Existencia del Dueño Beneficiario</label>
+                </td>
+                <td>
+                  <select #mySelect class="form-select" size="1" aria-label="Size 1 select example" id="htmlBenef" 
+                          class="form-control" style="background-color: cornsilk; font-size: small;"
+                          formControlName="htmlBenef"
+                          >
+                  <option value="NO">NO</option> 
+                  <option value="SI">SI</option>
+                  </select>     
+                </td>
+              </tr>
+              <tr>
+                <td colspan="5">
+                  <label  class="form-control" style="border: none; text-align: right; font-size: smaller;">* Si su respuesta es Si, por favor llene el Anexo XXII</label>
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td colspan="5">
+                  <label class="form-control" style="border: none; text-align: right; font-size: small;">Cuenta con documentación en su poder que le permita identificar al dueño beneficiario</label>
+                </td>
+                <td>
+                  <select #mySelect class="form-select" size="1" aria-label="Size 1 select example" id="htmlBcDoc" class="form-control" 
+                          style="background-color: cornsilk; font-size: small;"
+                          formControlName="htmlBcDoc"
+                          >
+                  <option value="NO">NO</option> 
+                  <option value="SI">SI</option>
+                  </select>     
+                </td>
+              </tr>
+              <tr>
+                <td colspan="4">                  
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlFullName"
+                    placeholder="Nombre completo del cliente"
+                    formControlName="htmlFullName"
+                  >
+                </td>
+                <td colspan="2">                  
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlSign"
+                    placeholder="Firma"
+                    formControlName="htmlSign"
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td colspan="6" style="font-size: small; text-align: center;">
+                  <label class="titulo-popup" style="font-size: small; text-align: center;">Manifiesto Bajo Protesta de decir verdad que todos y cada uno de los datos y documentos proporcionados</label>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="6" style="font-size: small; text-align: center;">
+                  <label class="titulo-popup" style="font-size: small; text-align: center;"> son verdaderos y que  el origen de los recursos con los que pagare el valor</label>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="6" style="font-size: small; text-align: center;">
+                  <label class="titulo-popup" style="font-size: small; text-align: center;">del vehículo provienen de actividades lícitas.</label>
+                </td>
+              </tr>
+            </table>
+            </div>
+            </div>
+          </div>        
+          <div class="modal-footer">            
+            <button type="submit" class="btn btn-success">Guardar</button>
+            &nbsp;
+            <button type="button" class="btn btn-danger" (click)="onCloseSaveClient()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>  
+
+<div class="modal modal-backdrop" tabindex="-1" id="modalUpdate">  
+  <div class="modal-container">
+    <div class="modal-dialog">
+      <div class="modal-content" style="width: 180%; height: 680px;">
+        <div style="text-align: center;">                  
+          <label class="titulo-popup">Ingrese La Información del Cliente</label>
+        </div>    
+        <form [formGroup]="clientFormUpd" (ngSubmit)="onUpdateAction()">
+          <div class="modal-body">              
+            <div class="table-container" style="height: 500px; width: 180%;">
+            <div class="scrollable-container">
+            <table style="width: 800px;">
+              <tr>
+                <td colspan="5" ></td>
+                <td style="text-align: right;">
+                  <input 
+                    type="date" 
+                    class="titulo-popup"
+                     style="font-size: small; text-align: end; border: none;"
+                    data-date-format="YYYYMMDD"
+                    value="{{ todayDate | date:'yyyy-MM-dd'}}"
+                    id="htmlDocDateUpd"
+                    placeholder="Fecha Actual"
+                    formControlName="htmlDocDateUpd"
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" >
+                  <input 
+                    type="text" 
+                    class="form-control"
+                    id="htmlRfcUpd"
+                    placeholder="RFC"
+                    formControlName="htmlRfcUpd"
+                  >
+                </td>      
+                <td ></td>        
+                <td colspan="3">
+                  <input 
+                    type="text" 
+                    class="form-control"
+                    id="htmlCurpUpd"
+                    placeholder="CURP"
+                    formControlName="htmlCurpUpd"
+                  >
+                </td>                
+              </tr>
+              <tr>                
+                <td colspan="2">
+                  <input 
+                    type="text" 
+                    class="form-control"
+                    id="htmlNamesUpd"
+                    placeholder="Nombre(s)"
+                    formControlName="htmlNamesUpd"
+                    
+                >
+                </td>              
+                <td colspan="2">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlFirNameUpd"
+                    placeholder="Apellido Paterno"
+                    formControlName="htmlFirNameUpd"                    
+                >
+                </td>
+                <td colspan="2">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlSecNameUpd"
+                    placeholder="Apellido Materno"
+                    formControlName="htmlSecNameUpd"
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td><label  class="form-control" style="border: none; text-align: right; font-size: small;">País de Nacionalidad</label>
+                <td colspan="2">
+                  <select id="htmlNattyUpd" class="form-control" style="background-color: cornsilk;" formControlName="htmlNattyUpd">
+                    <option selected value="México">México</option>
+                    @for (pais of listAllCountries; track pais.countryCode) {
+                      <option [value]="pais.countryCode">{{ pais.countryName }}</option>
+                    }
+                  </select>
+                </td>
+                <td><label  class="form-control" style="border: none; text-align: right; font-size: small;">País de Nacimiento</label>
+                </td>
+                <td colspan="2">
+                  <select id="htmlCouBirUpd" class="form-control" style="background-color: cornsilk;" formControlName="htmlCouBirUpd">
+                    <option selected value="México">México</option>
+                    @for (pais of listAllCountries; track pais.countryCode) {
+                      <option [value]="pais.countryCode">{{ pais.countryName }}</option>
+                    }
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input 
+                    type="date" 
+                    class="form-control"                  
+                    id="htmlBirDateUpd"
+                    data-date-format="YYYYMMDD"
+                    placeholder="Fecha de Nacimiento"
+                    formControlName="htmlBirDateUpd"
+                  >
+                </td>                                
+                <td colspan="5">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlEcoActUpd"
+                    placeholder="Actividad Económica, Ocupación, Profesión o Giro"
+                    formControlName="htmlEcoActUpd"
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlAddStrtUpd"
+                    placeholder="Calle/Avenida/Vía"
+                    formControlName="htmlAddStrtUpd"
+                  >
+                </td>
+                <td colspan="3">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlAddNumUpd"
+                    placeholder="No.exterior / interior"
+                    formControlName="htmlAddNumUpd"
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlAddSubbUpd"
+                    placeholder="Colonia/Urbanización"
+                    formControlName="htmlAddSubbUpd"
+                  >
+                </td>
+                <td colspan="3">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlAddCpUpd"
+                    placeholder="Código Postal"
+                    formControlName="htmlAddCpUpd"
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlAddCityUpd"
+                    placeholder="Ciudad o Población"
+                    formControlName="htmlAddCityUpd"
+                  >
+                </td>
+                <td colspan="2">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlAddTownUpd"
+                    placeholder="Alcaldía o Municipio"
+                    formControlName="htmlAddTownUpd"
+                  >
+                </td>
+                <td colspan="2">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlAddStateUpd"
+                    placeholder="Entidad Federativa"
+                    formControlName="htmlAddStateUpd"
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlPhoneSmtUpd"
+                    placeholder="Celular"
+                    formControlName="htmlPhoneSmtUpd"
+                  >
+                </td>
+                <td><label class="form-control" style="text-align: right;">País:</label></td>
+                <td colspan="3">
+                  <select id="htmlCountryUpd" class="form-control" style="background-color: cornsilk;" formControlName="htmlCountryUpd">
+                    <option selected value="México">México</option>
+                    @for (pais of listAllCountries; track pais.countryCode) {
+                      <option [value]="pais.countryCode">{{ pais.countryName }}</option>
+                    }
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlPhoneNumUpd"
+                    placeholder="Número (s ) de teléfono con clave"
+                    formControlName="htmlPhoneNumUpd"
+                  >                
+                </td>
+                <td>
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlPhoneExtUpd"
+                    placeholder="Extensión"
+                    formControlName="htmlPhoneExtUpd"
+                  >
+                </td>
+                <td colspan="2">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlEmailUpd"
+                    placeholder="Correo Electrónico"
+                    formControlName="htmlEmailUpd"
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlIdNameUpd"
+                    placeholder="Nombre de la Identificación"
+                    formControlName="htmlIdNameUpd"
+                  >
+                </td>
+                <td colspan="2">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlIdAutUpd"
+                    placeholder="Autoridad que emite la Identificación"
+                    formControlName="htmlIdAutUpd"
+                  >
+                </td>
+                <td colspan="2">
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlIdOfUpd"
+                    placeholder="Número de la Identificación"
+                    formControlName="htmlIdOfUpd"
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td colspan="6" style="background-color: silver;">
+                  <label class="subtitulo-lateral" style="font-size: small;">En caso de persona física haya señalado un domicilio de residencia en el extranjero y cuenten con domicilio en territorio nacional</label>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="6" style="background-color: silver;">
+                  <label class="subtitulo-lateral" style="font-size: small;">debera llenar la siguiente sección.</label>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="5">
+                  <label  class="form-control" style="border: none; text-align: right; font-size: small;">El Domicilio de Residencia es en el Extranjero</label>
+                </td>
+                <td>
+                  <select #mySelect class="form-select" size="1" aria-label="Size 1 select example" id="htmlForeignUpd" 
+                          class="form-control" style="background-color: cornsilk; font-size: small;"
+                          formControlName="htmlForeignUpd"
+                          >
+                  <option value="NO">NO</option> 
+                  <option value="SI">SI</option>
+                  </select>     
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <input 
+                    type="text" 
+                    class="form-control"
+                    id="htmlFstreetUpd"
+                    placeholder="Nombre de la Calle"
+                    formControlName="htmlFstreetUpd"
+                  >
+                </td>      
+                <td>
+                  <input 
+                    type="text" 
+                    class="form-control"
+                    id="htmlFnumberUpd"
+                    placeholder="Número Int/Ext"
+                    formControlName="htmlFnumberUpd"
+                  >
+                </td>      
+                <td>
+                  <input 
+                    type="text" 
+                    class="form-control"
+                    id="htmlFsuburbUpd"
+                    placeholder="Colonia o Demarcación Territorial"
+                    formControlName="htmlFsuburbUpd"
+                  >
+                </td>      
+                <td>
+                  <input 
+                    type="text" 
+                    class="form-control"
+                    id="htmlFcityUpd"
+                    placeholder="Ciudad o Entidad"
+                    formControlName="htmlFcityUpd"
+                  >
+                </td>
+                <td>
+                  <input 
+                    type="text" 
+                    class="form-control"
+                    id="htmlFcpUpd"
+                    placeholder="C.P."
+                    formControlName="htmlFcpUpd"
+                  >
+                </td>
+                <td>
+                  <input 
+                    type="text" 
+                    class="form-control"
+                    id="htmlFcounUpd"
+                    placeholder="País"
+                    formControlName="htmlFcounUpd"
+                  >
+                </td>
+              </tr>
+
+              <tr>
+                <td colspan="6" style="background-color: silver;">
+                  <label class="subtitulo-lateral" style="font-size: small;">Constancia de Beneficiario controlador y otras manifestaciones del Cliente  (campos obligatorios por requisitar)</label>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="5">
+                  <label  class="form-control" style="border: none; text-align: right; font-size: small;">Tiene Conocimiento de la Existencia del Dueño Beneficiario</label>
+                </td>
+                <td>
+                  <select #mySelect class="form-select" size="1" aria-label="Size 1 select example" id="htmlBenefUpd" 
+                          class="form-control" style="background-color: cornsilk; font-size: small;"
+                          formControlName="htmlBenefUpd"
+                          >
+                  <option value="NO">NO</option> 
+                  <option value="SI">SI</option>
+                  </select>     
+                </td>
+              </tr>
+              <tr>
+                <td colspan="5">
+                  <label  class="form-control" style="border: none; text-align: right; font-size: smaller;">* Si su respuesta es Si, por favor llene el Anexo XXII</label>
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td colspan="5">
+                  <label class="form-control" style="border: none; text-align: right; font-size: small;">Cuenta con documentación en su poder que le permita identificar al dueño beneficiario</label>
+                </td>
+                <td>
+                  <select #mySelect class="form-select" size="1" aria-label="Size 1 select example" id="htmlBcDocUpd" class="form-control" 
+                          style="background-color: cornsilk; font-size: small;"
+                          formControlName="htmlBcDocUpd"
+                          >
+                  <option value="NO">NO</option> 
+                  <option value="SI">SI</option>
+                  </select>     
+                </td>
+              </tr>
+              <tr>
+                <td colspan="4">                  
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlFullNameUpd"
+                    placeholder="Nombre completo del cliente"
+                    formControlName="htmlFullNameUpd"
+                  >
+                </td>
+                <td colspan="2">                  
+                  <input 
+                    type="text" 
+                    class="form-control"                  
+                    id="htmlSignUpd"
+                    placeholder="Firma"
+                    formControlName="htmlSignUpd"
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td colspan="6" style="font-size: small; text-align: center;">
+                  <label class="titulo-popup" style="font-size: small; text-align: center;">Manifiesto Bajo Protesta de decir verdad que todos y cada uno de los datos y documentos proporcionados</label>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="6" style="font-size: small; text-align: center;">
+                  <label class="titulo-popup" style="font-size: small; text-align: center;"> son verdaderos y que  el origen de los recursos con los que pagare el valor</label>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="6" style="font-size: small; text-align: center;">
+                  <label class="titulo-popup" style="font-size: small; text-align: center;">del vehículo provienen de actividades lícitas.</label>
+                </td>
+              </tr>
+            </table>
+            </div>
+            </div>
+          </div>        
+          <div class="modal-footer">            
+            <button type="submit" class="btn btn-success">Guardar</button>
+            &nbsp;
+            <button type="button" class="btn btn-danger" (click)="onCloseUpdate()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>  

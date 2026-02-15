@@ -264,6 +264,18 @@ export class ConceptsComponent implements OnInit {
   goQualify() {    
     this.router.navigate(['/qualify']);
   }
+  
+  goClients() {    
+    this.router.navigate(['/clients']);
+  }
+
+  goCompany() {
+    this.router.navigate(['/company']);
+  }
+
+  goUsers() {
+    this.router.navigate(['/users']);
+  }
 
   goConcepts(){
 

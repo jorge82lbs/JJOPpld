@@ -1,0 +1,230 @@
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+  <div class="container-fluid">
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <button class="btn btn-outline-light" (click)="onLogout()">Home</button>
+        &nbsp;&nbsp;&nbsp;
+        <button class="btn btn-outline-light" (click)="goQualify()">Qualify</button>
+        &nbsp;&nbsp;&nbsp;
+        <button class="btn btn-outline-light" (click)="goConcepts()">Conceptos</button>
+      </ul>
+
+      <form class="d-flex" role="search">
+        <a class="navbar-brand" href="#">Bienvenido: </a>
+        <a class="navbar-brand" href="#">{{loggedUser}}</a>        
+        <button class="btn btn-outline-success" (click)="onLogout()" type="submit">Salir</button>
+      </form>
+    </div>
+  </div>
+</nav>
+<div class="container mt-4">
+    <div class="mt-4">
+      <div class="input-group mb-3">
+        <label class="titulo-principal">Administración de Usuarios</label>
+      </div>
+    </div>
+</div>
+<div class="container mt-4">
+    <div class="mt-4">
+      <div class="input-group mb-3">        
+         <input
+            type="text"
+            class="form-control"
+            placeholder="Valor"
+            style="text-align: center; font-weight: bold;"
+            disabled
+            id="valueId" value="{{ conceptTxtMain }}"
+          >
+      </div>
+    </div>
+</div>
+<div class="container mt-4">
+    <div class="mt-4">
+      <label class="titulo-secundario">Usuarios</label>
+    </div>
+</div>
+<!-- Tabla Principal Clientes  -->
+<div class="container mt-4">  
+  <div class="mt-4">
+    <div class="table-container" style="height: 300px;">
+      <div class="scrollable-container">
+        <table matSort (matSortChange)="sortData($event)" class="table table-hover table-bordered tabla-redondeada" >
+          <thead class="table-dark">
+            <tr 
+            >
+              <th class="text-center table-td th-cel-jjo" style="background-color: black;">
+                <button class="btn btn-success" style="scale: .7" data-toggle="modal"
+                  (click)="onOpenSave()"
+                  ><i class="bi bi-plus-circle"></i>&nbsp;Nuevo</button>
+              </th>                              
+              <th class="text-center th-cel-jjo" style="background-color: black;">
+                  <input
+                    type="text"
+                    class="form-control th-cel-jjo"
+                    placeholder="Concepto"
+                    id="conRelAjaxId"
+                    (keyup)="onSearchTable($event,6)"
+                  >
+              </th>
+              <th class="text-center table-td th-cel-jjo" style="background-color: black;"></th>
+              <th class="text-center table-td th-cel-jjo" style="background-color: black;"></th>
+              <th class="text-center table-td th-cel-jjo" style="background-color: black;"></th>
+            </tr>
+            <tr>                              
+              <td class="text-center table-td th-cel-jjo" style="background-color: black;">Opciones</td>
+              <td mat-sort-header="nomCatalog" class="text-center table-td th-cel-jjo" style="background-color: black;">&nbsp;&nbsp;Username</td>
+              <td class="text-center table-td th-cel-jjo" style="background-color: black;">Usuario</td>
+              <td class="text-center table-td th-cel-jjo" style="background-color: black;">Email</td>
+              <td class="text-center table-td th-cel-jjo" style="background-color: black;">Detalles</td>
+            </tr>
+          </thead>
+          <tbody>            
+             @for (item of listMain; track item) {
+            <tr>                              
+              <td class="text-center table-td th-cel-jjo">
+                <button class="btn btn-primary" style="scale: .6" (click)="onOpenUpdate(item)">
+                  <i class="bi bi-pencil" style="scale: .6"></i>
+                </button>
+                &nbsp;
+                <button class="btn btn-danger" style="scale: .6" (click)="onOpenDelete(item)">
+                  <i class="bi bi-trash" style="scale: .6"></i>
+                </button>
+              </td>
+              <td class="text-center table-td th-cel-jjo">{{ item.indUsername }}</td>
+              <td class="text-center table-td th-cel-jjo">{{ item.indName }}&nbsp;{{ item.indFirstName }}&nbsp;{{ item.indSecondName }}</td>
+              <td class="text-center table-td th-cel-jjo">{{ item.indEmail }}</td>
+              <td class="text-center table-td th-cel-jjo"><button type="button" style="scale: .6" (click)="onOpenPopup(item)"><i class="bi bi-pencil-square" style="scale: .6"></i></button></td>
+              
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>      
+    </div>
+  </div>
+</div>
+
+<div class="modal modal-backdrop" tabindex="-1" id="modalSave">  
+  <div class="modal-container">
+    <div class="modal-dialog">
+      <div class="modal-content" style="width: 180%; height: 680px;">
+        <div style="text-align: center;">                  
+          <label class="titulo-popup">Ingrese La Información </label>
+        </div>    
+        <form [formGroup]="saveForm" (ngSubmit)="onSaveAction()">
+          <div class="modal-body">              
+            <div class="table-container" style="height: 500px; width: 180%;">
+            <div class="scrollable-container">
+            <table style="width: 800px;">              
+              <tr>                
+                <td colspan="4">
+                  <input 
+                    type="text" 
+                    class="form-control"
+                    id="htmlName"
+                    placeholder="Nombre(s)"
+                    formControlName="htmlName"
+                  >
+                </td>
+                <td colspan="2" >
+                </td>        
+              </tr>
+              <tr>                
+                <td colspan="6">
+                  <input 
+                    type="text" 
+                    class="form-control"
+                    id="htmlFirstName"
+                    placeholder="Apellido Paterno"
+                    formControlName="htmlFirstName"
+                  >
+                </td>
+              </tr>              
+              <tr>
+                <td colspan="4">
+                  <input 
+                    type="text" 
+                    class="form-control"
+                    id="htmlSecondName"
+                    placeholder="Apellido Materno"
+                    formControlName="htmlSecondName"
+                  >
+                </td>
+                <td colspan="2"></td>
+              </tr>  
+              <tr>                
+                <td colspan="6">
+                  <input 
+                    type="text" 
+                    class="form-control"
+                    id="htmlUserName"
+                    placeholder="Username"
+                    formControlName="htmlUserName"
+                  >
+                </td>
+              </tr>                          
+              <tr>                
+                <td colspan="6">
+                  <input 
+                    type="text" 
+                    class="form-control"
+                    id="htmlDesc"
+                    placeholder="Descripción"
+                    formControlName="htmlDesc"
+                  >
+                </td>
+              </tr>  
+              <tr>                
+                <td colspan="6">
+                  <input 
+                    type="text" 
+                    class="form-control"
+                    id="htmlEmail"
+                    placeholder="Correo Electrónico"
+                    formControlName="htmlEmail"
+                  >
+                </td>
+              </tr>  
+              <tr>                
+                <td colspan="6">
+                  <input 
+                    type="text" 
+                    class="form-control"
+                    id="htmlRfc"
+                    placeholder="RFC"
+                    formControlName="htmlRfc"
+                  >
+                </td>
+              </tr>  
+              
+              <tr>                
+                <td colspan="6">
+                  <p style="text-align: center;"> 
+                    <select #mySelect class="form-select" size="1" aria-label="Size 1 select example" formControlName="htmlRol"> 
+                      <option value="none">Seleccione un Rol</option>
+                      <option value="red">Administrador</option> 
+                      <option value="blue">Usuario</option>
+                    </select>              
+                  </p> 
+                </td>
+              </tr>  
+
+
+            </table>
+            </div>
+            </div>
+          </div>        
+          <div class="modal-footer">            
+            <button type="submit" class="btn btn-success">Guardar</button>
+            &nbsp;
+            <button type="button" class="btn btn-danger" (click)="onCloseSave()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

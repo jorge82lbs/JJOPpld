@@ -6,6 +6,13 @@ import { HttpClient, HttpClientModule } from '@angular/common/http'; // <-- Aña
 declare const bootstrap: any; // Añade esto al inicio del archivo
 import { Router } from '@angular/router';
 import { UserModel } from '../../models/UserModel.model';
+
+import { ConceptService } from '../../services/concept.service';
+import { ConceptModelRes } from '../../models/ConceptModelRes.model';
+import { ConceptModelReq } from '../../models/ConceptModelReq.model';
+
+
+
 import Swal from 'sweetalert2';
 
 
@@ -25,7 +32,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private router: Router,   
-    private http: HttpClient
+    private http: HttpClient,
+    private conceptService: ConceptService
   ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -34,7 +42,15 @@ export class LoginComponent {
   }
 
   error = false;
+  listConcepts: ConceptModelRes[] = [];
   userModel: UserModel = { userModel: '', passModel: '' };
+  conceptModelReq: ConceptModelReq = {
+    idApplication: 0,
+    idCompany: 0,
+    idConceptRisk: 0,
+    isList: 0,
+    nomConceptRisk: ""
+  };
   
   showPassword = false;
 
@@ -51,6 +67,7 @@ export class LoginComponent {
       this.userModel.passModel= this.loginForm.value.password;
 
       localStorage.setItem('currentUser', JSON.stringify(this.loginForm.value.username));
+      this.getInitialConcept(1, 1, 0, 0,'Soluciones Legales Integrales')
 
       Swal.fire({
         title: "Validando Acceso!",
@@ -75,6 +92,29 @@ export class LoginComponent {
 
   togglePassword() {
     this.showPassword = !this.showPassword;
+  }
+
+  getInitialConcept(pIdApplication: number, 
+                pIdCompany: number, 
+                pIdConceptRisk: number,
+                pIsList: number, 
+                pNomConceptRisk: string 
+               ){
+    this.conceptModelReq.idApplication = pIdApplication;
+    this.conceptModelReq.idCompany = pIdCompany;
+    this.conceptModelReq.idConceptRisk = pIdConceptRisk;
+    this.conceptModelReq.isList = pIsList;
+    this.conceptModelReq.nomConceptRisk = pNomConceptRisk;
+    this.conceptService.searchConcepts(this.conceptModelReq).subscribe({
+    next: (response) => {
+      this.listConcepts = response;
+      localStorage.setItem('conceptTxtMain', JSON.stringify(this.listConcepts[0].nomCatalogRisk));
+      localStorage.setItem('conceptTxtIDMain', JSON.stringify(this.listConcepts[0].idConceptRisk));      
+    },
+      error: () => {
+        this.error = true;
+      }
+    });	  
   }
 
 }
